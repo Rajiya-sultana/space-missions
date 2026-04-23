@@ -36,7 +36,6 @@ export default function LoginComponent() {
       if (!recaptchaRef.current) {
         recaptchaRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
           size: "invisible",
-          siteKey: process.env.NEXT_PUBLIC_FIREBASE_RECAPTCHA_KEY,
         });
         await recaptchaRef.current.render();
       }

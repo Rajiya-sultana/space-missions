@@ -23,6 +23,17 @@ export async function POST(req: NextRequest) {
   }
 
   const order = JSON.parse(rawBody);
+
+  // Only process Space Explorer Workbook orders
+  const SPACE_EXPLORER_PRODUCT_ID = "10426881114406";
+  const hasSpaceExplorer = order.line_items?.some(
+    (item: { product_id: number | string }) => String(item.product_id) === SPACE_EXPLORER_PRODUCT_ID
+  );
+
+  if (!hasSpaceExplorer) {
+    return NextResponse.json({ skipped: "Not a Space Explorer order" });
+  }
+
   const customer = order.customer;
 
   const rawPhone =

@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { missions } from "@/data/missions";
-import { VideoPlayer } from "@/components/VideoPlayer";
+import ProtectedVideo from "@/components/ProtectedVideo";
 import { StarBackground } from "@/components/StarBackground";
+import UserProfileButton from "@/components/UserProfileButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -20,9 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export function generateStaticParams() {
-  return missions.map((m) => ({ id: String(m.id) }));
-}
 
 export default async function MissionPage({ params }: Props) {
   const { id } = await params;
@@ -58,7 +56,7 @@ export default async function MissionPage({ params }: Props) {
             <span className="font-[family-name:var(--font-space)] font-bold text-white text-sm">
               {mission.title}
             </span>
-            <div className="w-24" />
+            <UserProfileButton />
           </div>
         </header>
 
@@ -79,7 +77,7 @@ export default async function MissionPage({ params }: Props) {
           </div>
 
           {/* Video player */}
-          <VideoPlayer videoUrl={mission.videoUrl} title={mission.subtitle} />
+          <ProtectedVideo missionId={missionId} videoUrl={mission.videoUrl} title={mission.subtitle} />
 
           {/* Return to workbook callout */}
           <div className="glass-card rounded-xl px-5 py-4 flex items-center gap-4">

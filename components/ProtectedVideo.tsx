@@ -4,6 +4,8 @@ import { useAuth } from "@/context/AuthContext";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import LoginComponent from "@/components/LoginComponent";
 
+const AUTH_ENABLED = false;
+
 interface Props {
   missionId: number;
   videoUrl: string;
@@ -12,6 +14,10 @@ interface Props {
 
 export default function ProtectedVideo({ missionId, videoUrl, title }: Props) {
   const { user, loading, hasPurchase, logout } = useAuth();
+
+  if (!AUTH_ENABLED) {
+    return <VideoPlayer videoUrl={videoUrl} title={title} />;
+  }
 
   // Mission 1 is always free
   if (missionId === 1) {

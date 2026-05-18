@@ -4,6 +4,7 @@ import type { Mission } from "@/data/products";
 import ProtectedVideo from "@/components/ProtectedVideo";
 import { StarBackground } from "@/components/StarBackground";
 import UserProfileButton from "@/components/UserProfileButton";
+import { BrandLogo } from "@/components/BrandLogo";
 
 interface Props {
   mission: Mission;
@@ -33,14 +34,7 @@ export function MissionDetail({ mission, prevMission, nextMission, productSlug, 
               <span>←</span>
               <span>Mission HQ</span>
             </Link>
-            <Image
-              src="/logo.png"
-              alt="Learn What Matters"
-              width={110}
-              height={28}
-              className="object-contain opacity-90"
-              style={{ maxHeight: 28 }}
-            />
+            <BrandLogo dark />
             <UserProfileButton />
           </div>
         </header>

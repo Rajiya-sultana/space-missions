@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { BrandLogo } from "@/components/BrandLogo";
 import { use } from "react";
 import { missions } from "@/data/missions/fun-science";
 import ProtectedVideo from "@/components/ProtectedVideo";
@@ -43,14 +44,7 @@ export default function ExperimentPage({ params }: Props) {
             <span>Back</span>
           </Link>
 
-          <Image
-            src="/logo.png"
-            alt="Learn What Matters"
-            width={110}
-            height={28}
-            className="object-contain"
-            style={{ maxHeight: 28 }}
-          />
+          <BrandLogo />
 
           <a
             href="https://learnwhatmatters.in"

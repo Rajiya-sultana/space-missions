@@ -33,9 +33,14 @@ export function MissionDetail({ mission, prevMission, nextMission, productSlug, 
               <span>←</span>
               <span>Mission HQ</span>
             </Link>
-            <span className="font-[family-name:var(--font-space)] font-bold text-white text-sm">
-              {mission.title}
-            </span>
+            <Image
+              src="/logo.png"
+              alt="Learn What Matters"
+              width={110}
+              height={28}
+              className="object-contain opacity-90"
+              style={{ maxHeight: 28 }}
+            />
             <UserProfileButton />
           </div>
         </header>

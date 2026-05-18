@@ -43,7 +43,14 @@ export default function ExperimentPage({ params }: Props) {
             <span>Back</span>
           </Link>
 
-          <span />
+          <Image
+            src="/logo.png"
+            alt="Learn What Matters"
+            width={110}
+            height={28}
+            className="object-contain"
+            style={{ maxHeight: 28 }}
+          />
 
           <a
             href="https://learnwhatmatters.in"

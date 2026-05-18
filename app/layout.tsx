@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { WelcomeToast } from "@/components/WelcomeToast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,7 +37,10 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
     >
       <body className="min-h-full bg-[#050714] text-slate-50 antialiased">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <WelcomeToast />
+        </AuthProvider>
       </body>
     </html>
   );

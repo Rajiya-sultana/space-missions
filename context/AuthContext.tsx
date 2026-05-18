@@ -1,19 +1,25 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { onAuthStateChanged, User, signOut, RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
-import { auth } from "@/lib/firebase-client";
+import { supabase } from "@/lib/supabase-client";
+import type { User } from "@supabase/supabase-js";
+
+const AMAZON_SESSION_KEY = "lwm_amazon_access";
+
+interface AmazonAccess {
+  orderId: string;
+  productSlug: string;
+}
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  hasPurchase: boolean;
+  purchaseMap: Record<string, boolean>;
   justLoggedIn: boolean;
-  confirmationResult: ConfirmationResult | null;
-  sendOTP: (phone: string, recaptchaVerifier: RecaptchaVerifier) => Promise<void>;
-  verifyOTP: (otp: string) => Promise<void>;
+  amazonAccess: AmazonAccess | null;
+  signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  checkPurchase: (phone: string) => Promise<boolean>;
+  verifyAmazonOrder: (orderId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -21,68 +27,78 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hasPurchase, setHasPurchase] = useState(false);
+  const [purchaseMap, setPurchaseMap] = useState<Record<string, boolean>>({});
   const [justLoggedIn, setJustLoggedIn] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+  const [amazonAccess, setAmazonAccess] = useState<AmazonAccess | null>(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser?.phoneNumber) {
-        const purchased = await checkPurchase(firebaseUser.phoneNumber);
-        setHasPurchase(purchased);
-      }
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  async function sendOTP(phone: string, recaptchaVerifier: RecaptchaVerifier) {
-    const result = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
-    setConfirmationResult(result);
+  async function fetchPurchases(email: string) {
+    try {
+      const res = await fetch("/api/auth/verify-purchases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data: { purchases?: Record<string, boolean> } = await res.json();
+      setPurchaseMap(data.purchases ?? {});
+    } catch {
+      setPurchaseMap({});
+    }
   }
 
-  async function verifyOTP(otp: string) {
-    if (!confirmationResult) throw new Error("No OTP sent. Please request OTP first.");
-    const result = await confirmationResult.confirm(otp);
-    const idToken = await result.user.getIdToken();
+  useEffect(() => {
+    // Restore Amazon session from sessionStorage (browser only)
+    try {
+      const stored = sessionStorage.getItem(AMAZON_SESSION_KEY);
+      if (stored) setAmazonAccess(JSON.parse(stored) as AmazonAccess);
+    } catch {}
 
-    await fetch("/api/auth/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idToken, phoneNumber: result.user.phoneNumber }),
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user?.email) fetchPurchases(session.user.email);
+      setLoading(false);
     });
 
-    if (result.user.phoneNumber) {
-      const purchased = await checkPurchase(result.user.phoneNumber);
-      setHasPurchase(purchased);
-    }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user?.email) {
+        fetchPurchases(session.user.email);
+      } else {
+        setPurchaseMap({});
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function signIn(email: string, password: string) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
     setJustLoggedIn(true);
     setTimeout(() => setJustLoggedIn(false), 3000);
   }
 
-  async function checkPurchase(phone: string): Promise<boolean> {
-    try {
-      const res = await fetch("/api/auth/verify-purchase", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone }),
-      });
-      const data = await res.json();
-      return data.hasPurchase === true;
-    } catch {
-      return false;
-    }
+  async function verifyAmazonOrder(orderId: string) {
+    const res = await fetch("/api/auth/verify-amazon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId }),
+    });
+    const data: { success: boolean; productSlug?: string; error?: string } = await res.json();
+    if (!data.success) throw new Error(data.error ?? "Order not found");
+    const access: AmazonAccess = { orderId, productSlug: data.productSlug! };
+    setAmazonAccess(access);
+    try { sessionStorage.setItem(AMAZON_SESSION_KEY, JSON.stringify(access)); } catch {}
   }
 
   async function logout() {
-    await signOut(auth);
-    setHasPurchase(false);
-    setConfirmationResult(null);
+    await supabase.auth.signOut();
+    setPurchaseMap({});
+    setAmazonAccess(null);
+    try { sessionStorage.removeItem(AMAZON_SESSION_KEY); } catch {}
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, hasPurchase, justLoggedIn, confirmationResult, sendOTP, verifyOTP, logout, checkPurchase }}>
+    <AuthContext.Provider value={{ user, loading, purchaseMap, justLoggedIn, amazonAccess, signIn, logout, verifyAmazonOrder }}>
       {children}
     </AuthContext.Provider>
   );

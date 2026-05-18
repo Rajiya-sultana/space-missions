@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { adminDb } from "@/lib/firebase-admin";
+import { supabase } from "@/lib/supabase-admin";
+import { PRODUCT_ID_TO_SLUG } from "@/data/products";
 
 function normalizePhone(phone: string | null | undefined): string | null {
   if (!phone) return null;
@@ -24,46 +25,52 @@ export async function POST(req: NextRequest) {
 
   const order = JSON.parse(rawBody);
 
-  // Only process Space Explorer Workbook orders
-  const SPACE_EXPLORER_PRODUCT_ID = "10426881114406";
-  const hasSpaceExplorer = order.line_items?.some(
-    (item: { product_id: number | string }) => String(item.product_id) === SPACE_EXPLORER_PRODUCT_ID
-  );
-
-  if (!hasSpaceExplorer) {
-    return NextResponse.json({ skipped: "Not a Space Explorer order" });
-  }
-
   const customer = order.customer;
-
   const rawPhone =
     customer?.phone ||
     order.billing_address?.phone ||
     order.shipping_address?.phone;
 
   const phoneNumber = normalizePhone(rawPhone);
+  const customerEmail = (customer?.email ?? "").trim().toLowerCase();
 
-  if (!phoneNumber) {
-    return NextResponse.json({ error: "No phone number in order" }, { status: 400 });
+  if (!phoneNumber && !customerEmail) {
+    return NextResponse.json({ error: "No phone or email in order" }, { status: 400 });
   }
 
-  await adminDb.collection("purchases").add({
-    phoneNumber,
-    orderId: String(order.id),
-    productName: order.line_items?.[0]?.title ?? "Space Explorer Workbook",
-    productId: String(order.line_items?.[0]?.product_id ?? ""),
-    purchaseDate: new Date(),
-    amount: parseFloat(order.total_price ?? "0"),
-    currency: order.currency ?? "INR",
-    paymentStatus: order.financial_status ?? "paid",
-    webhookReceivedAt: new Date(),
-    customerName: `${customer?.first_name ?? ""} ${customer?.last_name ?? ""}`.trim(),
-    customerEmail: customer?.email ?? "",
-  });
+  const lineItems: Array<{ product_id: number | string; title: string }> =
+    order.line_items ?? [];
 
-  // Update hasPurchase flag if user already exists in Firestore
-  const usersSnap = await adminDb.collection("users").where("phoneNumber", "==", phoneNumber).get();
-  usersSnap.forEach((doc) => doc.ref.update({ hasPurchase: true }));
+  const rows: object[] = [];
 
-  return NextResponse.json({ success: true });
+  for (const item of lineItems) {
+    const productSlug = PRODUCT_ID_TO_SLUG[String(item.product_id)];
+    if (!productSlug) continue;
+
+    rows.push({
+      phone_number: phoneNumber,
+      product_slug: productSlug,
+      order_id: String(order.id),
+      product_name: item.title,
+      product_id: String(item.product_id),
+      amount: parseFloat(order.total_price ?? "0"),
+      currency: order.currency ?? "INR",
+      payment_status: order.financial_status ?? "paid",
+      customer_name: `${customer?.first_name ?? ""} ${customer?.last_name ?? ""}`.trim(),
+      customer_email: customerEmail,
+    });
+  }
+
+  if (rows.length === 0) {
+    return NextResponse.json({ skipped: "No known products in order" });
+  }
+
+  const { error } = await supabase.from("purchases").insert(rows);
+
+  if (error) {
+    console.error("Supabase insert error:", error);
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true, productsProcessed: rows.length });
 }

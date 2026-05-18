@@ -5,9 +5,12 @@ import { useRef, useState } from "react";
 type Props = {
   videoUrl: string;
   title: string;
+  onComplete?: () => void;
+  vertical?: boolean;
 };
 
-export function VideoPlayer({ videoUrl, title }: Props) {
+export function VideoPlayer({ videoUrl, title, onComplete, vertical = false }: Props) {
+  const aspect = vertical ? "aspect-[9/16]" : "aspect-video";
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -24,15 +27,15 @@ export function VideoPlayer({ videoUrl, title }: Props) {
 
   if (!videoUrl) {
     return (
-      <div className="w-full aspect-video rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-3 text-slate-400">
-        <span className="text-5xl">🚀</span>
+      <div className={`w-full ${aspect} rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-3 text-slate-400`}>
+        <span className="text-5xl">🔬</span>
         <p className="text-sm font-medium">Video coming soon — check back shortly!</p>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black group shadow-[0_0_60px_rgba(249,115,22,0.1)]">
+    <div className={`relative w-full ${aspect} rounded-2xl overflow-hidden bg-black group shadow-[0_0_60px_rgba(249,115,22,0.1)]`}>
       <video
         ref={videoRef}
         src={videoUrl}
@@ -43,6 +46,7 @@ export function VideoPlayer({ videoUrl, title }: Props) {
         preload="metadata"
         onPlay={() => { setIsPlaying(true); setHasStarted(true); }}
         onPause={() => setIsPlaying(false)}
+        onEnded={() => { setIsPlaying(false); onComplete?.(); }}
       />
 
       {/* Big play overlay before first interaction */}

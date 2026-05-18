@@ -27,7 +27,7 @@ export function BrandLogo({ dark = false }: Props) {
       src="/logo.png"
       alt="Learn What Matters"
       onError={() => setError(true)}
-      style={{ height: 28, width: "auto", objectFit: "contain" }}
+      style={{ height: 45, width: "auto", objectFit: "contain" }}
     />
   );
 }

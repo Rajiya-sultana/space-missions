@@ -45,7 +45,7 @@ export const products: Product[] = [
     tagline: "Discover the world around you",
     description:
       "Conduct experiments, explore forces, discover living things, and uncover the science behind everyday wonders!",
-    shopifyProductId: "",
+    shopifyProductId: "10530952642854",
     shopifyUrl: "https://learnwhatmatters.in/products/fun-easy-science-experiments-for-kids-stem-workbook",
     gradient: "from-green-600 via-emerald-500 to-teal-400",
     icon: "🔬",
@@ -65,6 +65,7 @@ export const products: Product[] = [
 
 export const PRODUCT_ID_TO_SLUG: Record<string, ProductSlug> = {
   "10426881114406": "space-explorer",
+  "10530952642854": "fun-science",
 };
 
 export function getProduct(slug: string): Product | undefined {

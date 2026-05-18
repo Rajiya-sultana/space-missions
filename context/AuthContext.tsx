@@ -4,22 +4,13 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { supabase } from "@/lib/supabase-client";
 import type { User } from "@supabase/supabase-js";
 
-const AMAZON_SESSION_KEY = "lwm_amazon_access";
-
-interface AmazonAccess {
-  orderId: string;
-  productSlug: string;
-}
-
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   purchaseMap: Record<string, boolean>;
   justLoggedIn: boolean;
-  amazonAccess: AmazonAccess | null;
   signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  verifyAmazonOrder: (orderId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,7 +20,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [purchaseMap, setPurchaseMap] = useState<Record<string, boolean>>({});
   const [justLoggedIn, setJustLoggedIn] = useState(false);
-  const [amazonAccess, setAmazonAccess] = useState<AmazonAccess | null>(null);
 
   async function fetchPurchases(email: string) {
     try {
@@ -46,12 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    // Restore Amazon session from sessionStorage (browser only)
-    try {
-      const stored = sessionStorage.getItem(AMAZON_SESSION_KEY);
-      if (stored) setAmazonAccess(JSON.parse(stored) as AmazonAccess);
-    } catch {}
-
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user?.email) fetchPurchases(session.user.email);
@@ -77,28 +61,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTimeout(() => setJustLoggedIn(false), 3000);
   }
 
-  async function verifyAmazonOrder(orderId: string) {
-    const res = await fetch("/api/auth/verify-amazon", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId }),
-    });
-    const data: { success: boolean; productSlug?: string; error?: string } = await res.json();
-    if (!data.success) throw new Error(data.error ?? "Order not found");
-    const access: AmazonAccess = { orderId, productSlug: data.productSlug! };
-    setAmazonAccess(access);
-    try { sessionStorage.setItem(AMAZON_SESSION_KEY, JSON.stringify(access)); } catch {}
-  }
-
   async function logout() {
     await supabase.auth.signOut();
     setPurchaseMap({});
-    setAmazonAccess(null);
-    try { sessionStorage.removeItem(AMAZON_SESSION_KEY); } catch {}
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, purchaseMap, justLoggedIn, amazonAccess, signIn, logout, verifyAmazonOrder }}>
+    <AuthContext.Provider value={{ user, loading, purchaseMap, justLoggedIn, signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );

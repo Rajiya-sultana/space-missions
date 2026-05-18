@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=375">
+<title>Mobile List Preview</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a1a; display: flex; justify-content: center; padding: 40px 20px; }
+
+.phone {
+  width: 375px;
+  background: #f9f7f2;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  border: 8px solid #1a1a2e;
+}
+
+.hero {
+  background: linear-gradient(135deg, #ff6b35 0%, #a855f7 100%);
+  padding: 32px 20px 24px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+.hero h1 { color: white; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+.hero h1 span { color: #FFD30F; }
+.hero p { color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 16px; }
+.hero-stats { display: flex; justify-content: center; gap: 16px; }
+.hero-stat { color: white; font-size: 12px; font-weight: 600; }
+
+.wave {
+  background: linear-gradient(135deg, #ff6b35 0%, #a855f7 100%);
+  line-height: 0;
+}
+
+.content { padding: 20px 16px; }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.section-title { font-size: 17px; font-weight: 800; color: #0D2244; }
+.section-count { font-size: 12px; color: #9CA3AF; font-weight: 600; }
+
+.mission-list {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #F0F0F0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.mission-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 16px;
+  gap: 13px;
+  border-bottom: 1px solid #F5F5F5;
+  text-decoration: none;
+  background: white;
+  transition: background 0.15s;
+}
+.mission-row:last-child { border-bottom: none; }
+.mission-row:active { background: #FAFAFA; }
+
+.mission-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.g1 { background: linear-gradient(135deg, #f97316, #eab308); }
+.g2 { background: linear-gradient(135deg, #2563eb, #14b8a6); }
+.g3 { background: linear-gradient(135deg, #dc2626, #f97316); }
+.g4 { background: linear-gradient(135deg, #1d4ed8, #6366f1); }
+.g5 { background: linear-gradient(135deg, #7c3aed, #6366f1); }
+.g6 { background: linear-gradient(135deg, #78716c, #d97706); }
+.g7 { background: linear-gradient(135deg, #0891b2, #3b82f6); }
+.g8 { background: linear-gradient(135deg, #0ea5e9, #f59e0b); }
+.g9 { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+.g10 { background: linear-gradient(135deg, #dc2626, #7c3aed); }
+
+.mission-text { flex: 1; min-width: 0; }
+.mission-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.free-pill {
+  background: #E6F9EA;
+  color: #1E7A2A;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.mission-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0D2244;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron { color: #C4C4C4; font-size: 20px; font-weight: 300; flex-shrink: 0; }
+
+/* Bottom Nav */
+.bottom-nav {
+  background: white;
+  border-top: 1.5px solid #F0F0F0;
+  display: flex;
+  height: 64px;
+}
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #9CA3AF;
+}
+.nav-tab.active { color: #3b0a45; }
+.nav-tab .dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #fc9c00;
+  margin-bottom: 1px;
+}
+.nav-icon { font-size: 20px; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">🚀 SPACE EXPLORER WORKBOOK</div>
+    <h1>Welcome, <span>Space Explorer!</span></h1>
+    <p>Watch each mission video with Captain Nova, then complete your workbook!</p>
+    <div class="hero-stats">
+      <span class="hero-stat">🎖️ 10 Badges</span>
+      <span class="hero-stat">🏆 1 Certificate</span>
+      <span class="hero-stat">🎬 3D Videos</span>
+    </div>
+  </div>
+
+  <!-- Wave -->
+  <div class="wave">
+    <svg viewBox="0 0 375 30" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:30px;">
+      <path d="M0,15 C90,30 285,0 375,15 L375,30 L0,30 Z" fill="#f9f7f2"/>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="section-header">
+      <span class="section-title">Choose Your Mission</span>
+      <span class="section-count">10 missions total</span>
+    </div>
+
+    <div class="mission-list">
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g1">🪐</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 1 <span class="free-pill">FREE</span></div>
+          <div class="mission-title">Meet the Solar System</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g2">🌍</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 2</div>
+          <div class="mission-title">Earth & The Moon</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g3">🚀</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 3</div>
+          <div class="mission-title">Rockets & How They Fly</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g4">🧑‍🚀</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 4</div>
+          <div class="mission-title">Life of an Astronaut</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g5">✨</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 5</div>
+          <div class="mission-title">Star Patterns & Galaxies</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g6">☄️</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 6</div>
+          <div class="mission-title">Asteroids, Meteors & Comets</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g7">📡</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 7</div>
+          <div class="mission-title">Satellites & Space Technology</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g8">⛅</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 8</div>
+          <div class="mission-title">Space Weather & Solar Storms</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g9">👩‍🚀</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 9</div>
+          <div class="mission-title">Space Exploration History</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+      <a class="mission-row" href="#">
+        <div class="mission-icon g10">🌌</div>
+        <div class="mission-text">
+          <div class="mission-label">MISSION 10</div>
+          <div class="mission-title">The Future of Space Travel</div>
+        </div>
+        <div class="chevron">›</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-tab">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </div>
+    <div class="nav-tab active">
+      <div class="dot"></div>
+      <span class="nav-icon">🚀</span>
+      <span>Space</span>
+    </div>
+    <div class="nav-tab">
+      <span class="nav-icon">🧪</span>
+      <span>Science</span>
+    </div>
+    <div class="nav-tab">
+      <span class="nav-icon">👤</span>
+      <span>Profile</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

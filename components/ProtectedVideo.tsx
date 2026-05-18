@@ -19,9 +19,8 @@ interface Props {
 
 export default function ProtectedVideo({ missionId, videoUrl, title, productSlug, vertical = false, lightMode = false }: Props) {
   const aspect = vertical ? "aspect-[9/16]" : "aspect-video";
-  const { user, loading, purchaseMap, amazonAccess, logout } = useAuth();
+  const { user, loading, purchaseMap, logout } = useAuth();
   const hasPurchase = purchaseMap[productSlug] ?? false;
-  const hasAmazonAccess = amazonAccess?.productSlug === productSlug;
   const { markComplete } = useProgress(productSlug);
 
   if (!AUTH_ENABLED) {
@@ -30,11 +29,6 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
 
   // Mission 1 is always free
   if (missionId === 1) {
-    return <VideoPlayer videoUrl={videoUrl} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
-  }
-
-  // Amazon order ID access — no login required
-  if (hasAmazonAccess) {
     return <VideoPlayer videoUrl={videoUrl} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
   }
 

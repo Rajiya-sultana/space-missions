@@ -340,7 +340,7 @@ export const missions: Mission[] = [
     title: "Experiment 19",
     subtitle: "Bottle Rocket Blast",
     description: "Drop a baking soda packet into a bottle of vinegar, seal it, place it upside down, and watch pressure blast it into the air!",
-    videoUrl: "https://cdn.shopify.com/videos/c/o/v/038d258bdf7344fd904584caceec6412.mp4",
+    videoUrl: "https://cdn.shopify.com/videos/c/o/v/448588cc2d3f4f1c8cf3890e7c6d5dff.mp4",
     gradient: "from-cyan-700 via-blue-600 to-indigo-500",
     planet: "🚀",
     thumbnail: "/thumbnails/fun-science/19.png",

@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase-client";
 
 interface Props {
   productSlug?: string;
   lightMode?: boolean;
 }
 
-type Mode = "signin" | "register";
+type Mode = "signin" | "register" | "forgot";
 
 export default function LoginComponent({ lightMode = false }: Props) {
   const { signIn } = useAuth();
@@ -20,12 +21,32 @@ export default function LoginComponent({ lightMode = false }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
 
   function switchMode(next: Mode) {
     setMode(next);
     setError("");
     setPassword("");
     setConfirmPassword("");
+    setResetSent(false);
+  }
+
+  async function handleForgotPassword() {
+    setError("");
+    if (!email.trim()) { setError("Please enter your email"); return; }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setResetSent(true);
+    } catch (err: unknown) {
+      setError((err as { message?: string }).message ?? "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleSignIn() {
@@ -106,97 +127,127 @@ export default function LoginComponent({ lightMode = false }: Props) {
     : "text-slate-500 hover:text-slate-300 transition-colors";
 
   const isRegister = mode === "register";
+  const isForgot = mode === "forgot";
 
   return (
     <div className={cardCls}>
       <h2 className={headingCls}>
-        {isRegister ? "Create your account" : "Sign in to continue"}
+        {isRegister ? "Create your account" : isForgot ? "Reset your password" : "Sign in to continue"}
       </h2>
       <p className={subtitleCls}>
         {isRegister
           ? "Use the email from your order confirmation"
+          : isForgot
+          ? "We'll send a reset link to your email"
           : "Enter the email you used when purchasing"}
       </p>
 
-      <div className="flex flex-col gap-3 mb-4">
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && (isRegister ? handleRegister() : handleSignIn())}
-          autoComplete="email"
-          className={inputCls}
-        />
-
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && (isRegister ? handleRegister() : handleSignIn())}
-            autoComplete={isRegister ? "new-password" : "current-password"}
-            className={`${inputCls} w-full pr-11`}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
-            className={`absolute right-3 top-1/2 -translate-y-1/2 transition-opacity hover:opacity-70 ${eyeCls}`}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                <line x1="1" y1="1" x2="23" y2="23" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            )}
-          </button>
+      {/* Forgot password — success state */}
+      {isForgot && resetSent ? (
+        <div className={`rounded-xl p-4 mb-4 text-sm text-center ${lightMode ? "bg-green-50 text-green-700" : "bg-green-500/10 text-green-400"}`}>
+          ✅ Reset link sent! Check your inbox and follow the link to set a new password.
         </div>
+      ) : (
+        <>
+          <div className="flex flex-col gap-3 mb-4">
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                if (isForgot) handleForgotPassword();
+                else if (isRegister) handleRegister();
+                else handleSignIn();
+              }}
+              autoComplete="email"
+              className={inputCls}
+            />
 
-        {isRegister && (
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleRegister()}
-            autoComplete="new-password"
-            className={inputCls}
-          />
-        )}
-      </div>
+            {!isForgot && (
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (isRegister ? handleRegister() : handleSignIn())}
+                  autoComplete={isRegister ? "new-password" : "current-password"}
+                  className={`${inputCls} w-full pr-11`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 transition-opacity hover:opacity-70 ${eyeCls}`}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            )}
 
-      {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+            {isRegister && (
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleRegister()}
+                autoComplete="new-password"
+                className={inputCls}
+              />
+            )}
+          </div>
 
-      <button
-        onClick={isRegister ? handleRegister : handleSignIn}
-        disabled={loading}
-        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-3 text-sm transition-colors"
-      >
-        {loading
-          ? "Please wait…"
-          : isRegister
-          ? "Create Account →"
-          : "Sign In →"}
-      </button>
+          {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
-      <div className="text-center mt-3 mb-4">
-        {isRegister ? (
-          <button onClick={() => switchMode("signin")} className={`text-xs ${toggleCls}`}>
-            Already have an account?{" "}
-            <span className="underline">Sign in</span>
+          <button
+            onClick={isForgot ? handleForgotPassword : isRegister ? handleRegister : handleSignIn}
+            disabled={loading}
+            className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-3 text-sm transition-colors"
+          >
+            {loading
+              ? "Please wait…"
+              : isForgot
+              ? "Send Reset Link →"
+              : isRegister
+              ? "Create Account →"
+              : "Sign In →"}
           </button>
-        ) : (
-          <button onClick={() => switchMode("register")} className={`text-xs ${toggleCls}`}>
-            New here?{" "}
-            <span className="underline">Create an account</span>
+        </>
+      )}
+
+      <div className="text-center mt-3 mb-4 flex flex-col gap-1">
+        {mode === "signin" && (
+          <>
+            <button onClick={() => switchMode("register")} className={`text-xs ${toggleCls}`}>
+              New here? <span className="underline">Create an account</span>
+            </button>
+            <button onClick={() => switchMode("forgot")} className={`text-xs ${toggleCls}`}>
+              Forgot your password? <span className="underline">Reset it</span>
+            </button>
+          </>
+        )}
+        {mode === "register" && (
+          <button onClick={() => switchMode("signin")} className={`text-xs ${toggleCls}`}>
+            Already have an account? <span className="underline">Sign in</span>
+          </button>
+        )}
+        {mode === "forgot" && (
+          <button onClick={() => switchMode("signin")} className={`text-xs ${toggleCls}`}>
+            ← Back to sign in
           </button>
         )}
       </div>

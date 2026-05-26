@@ -1,15 +1,14 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { supabase } from "@/lib/supabase-client";
-import type { User } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
+import { firebaseAuth } from "@/lib/firebase-client";
+import { User, onAuthStateChanged, signOut } from "firebase/auth";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   purchaseMap: Record<string, boolean>;
   justLoggedIn: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -20,13 +19,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [purchaseMap, setPurchaseMap] = useState<Record<string, boolean>>({});
   const [justLoggedIn, setJustLoggedIn] = useState(false);
+  const prevUserRef = useRef<User | null>(null);
 
-  async function fetchPurchases(email: string) {
+  async function fetchPurchases(phone: string) {
     try {
-      const res = await fetch("/api/auth/verify-purchases", {
+      const res = await fetch("/api/auth/verify-purchases-phone", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ phone }),
       });
       const data: { purchases?: Record<string, boolean> } = await res.json();
       setPurchaseMap(data.purchases ?? {});
@@ -36,38 +36,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user?.email) fetchPurchases(session.user.email);
-      setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user?.email) {
-        fetchPurchases(session.user.email);
+    const unsub = onAuthStateChanged(firebaseAuth, (firebaseUser) => {
+      if (firebaseUser && !prevUserRef.current) {
+        setJustLoggedIn(true);
+        setTimeout(() => setJustLoggedIn(false), 3000);
+      }
+      prevUserRef.current = firebaseUser;
+      setUser(firebaseUser);
+      if (firebaseUser?.phoneNumber) {
+        fetchPurchases(firebaseUser.phoneNumber);
       } else {
         setPurchaseMap({});
       }
+      setLoading(false);
     });
-
-    return () => subscription.unsubscribe();
+    return unsub;
   }, []);
 
-  async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    setJustLoggedIn(true);
-    setTimeout(() => setJustLoggedIn(false), 3000);
-  }
-
   async function logout() {
-    await supabase.auth.signOut();
+    await signOut(firebaseAuth);
     setPurchaseMap({});
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, purchaseMap, justLoggedIn, signIn, logout }}>
+    <AuthContext.Provider value={{ user, loading, purchaseMap, justLoggedIn, logout }}>
       {children}
     </AuthContext.Provider>
   );

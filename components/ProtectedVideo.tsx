@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { VideoPlayer } from "@/components/VideoPlayer";
-import LoginComponent from "@/components/LoginComponent";
+import PhoneLoginComponent from "@/components/PhoneLoginComponent";
 import { getProduct } from "@/data/products";
 import { useProgress } from "@/hooks/useProgress";
 
@@ -48,7 +48,7 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
   if (!user) {
     return (
       <div style={centeredCard}>
-        <LoginComponent productSlug={productSlug} lightMode={lightMode} />
+        <PhoneLoginComponent lightMode={lightMode} />
       </div>
     );
   }
@@ -72,8 +72,8 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
         <div className="text-4xl mb-4">🔒</div>
         <h3 className={headingCls}>Purchase Required</h3>
         <p className={bodyCls}>
-          You&apos;re logged in as{" "}
-          <span className={emailCls}>{user.email}</span>
+          You&apos;re signed in as{" "}
+          <span className={emailCls}>{user.phoneNumber}</span>
           {", "}but this mission requires a purchase.
         </p>
         <a

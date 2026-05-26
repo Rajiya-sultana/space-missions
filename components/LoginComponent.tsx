@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase-client";
 
 interface Props {
@@ -12,7 +11,10 @@ interface Props {
 type Mode = "signin" | "register" | "forgot";
 
 export default function LoginComponent({ lightMode = false }: Props) {
-  const { signIn } = useAuth();
+  async function signIn(email: string, password: string) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+  }
 
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");

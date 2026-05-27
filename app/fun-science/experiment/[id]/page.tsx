@@ -112,7 +112,7 @@ export default function ExperimentPage({ params }: Props) {
           {/* ── LEFT: vertical video ── */}
           <div className="w-full lg:flex-shrink-0 lg:w-[300px]">
             {/* On mobile: centre the video as a narrow column */}
-            <div className="max-w-[300px] mx-auto lg:mx-0">
+            <div className="w-full lg:max-w-[300px] mx-auto lg:mx-0">
               <ProtectedVideo
                 missionId={experiment.id}
                 videoUrl={experiment.videoUrl}

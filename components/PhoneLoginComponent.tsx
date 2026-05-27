@@ -82,8 +82,8 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
   }
 
   const cardCls = lightMode
-    ? "bg-white border border-gray-200 shadow-sm rounded-2xl p-8 w-full"
-    : "glass-card rounded-2xl p-8 w-full";
+    ? "bg-white border border-gray-200 shadow-sm rounded-2xl p-5 w-full"
+    : "glass-card rounded-2xl p-5 w-full";
   const headingCls = lightMode
     ? "font-bold text-gray-900 text-xl mb-1 text-center"
     : "font-bold text-white text-xl mb-1 text-center";
@@ -94,8 +94,8 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
     ? "bg-white border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500"
     : "bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-orange-500";
   const prefixCls = lightMode
-    ? "bg-gray-50 border border-gray-300 text-gray-600 rounded-lg px-3 text-sm shrink-0 flex items-center"
-    : "bg-white/5 border border-white/10 text-slate-400 rounded-lg px-3 text-sm shrink-0 flex items-center";
+    ? "bg-gray-50 border border-gray-300 text-gray-600 rounded-lg px-3 py-3 text-sm shrink-0"
+    : "bg-white/5 border border-white/10 text-slate-400 rounded-lg px-3 py-3 text-sm shrink-0";
   const toggleCls = lightMode
     ? "text-gray-400 hover:text-gray-600 transition-colors"
     : "text-slate-500 hover:text-slate-300 transition-colors";
@@ -113,7 +113,7 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
 
       <div className="flex flex-col gap-3 mb-4">
         {step === "phone" ? (
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2">
             <span className={prefixCls}>+91</span>
             <input
               type="tel"

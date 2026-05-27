@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebase-client";
-import { formatPhoneNumber, validatePhoneNumber } from "@/lib/phone-utils";
+import { validatePhoneNumber } from "@/lib/phone-utils";
 
 interface Props {
   lightMode?: boolean;
@@ -25,7 +25,7 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
       return;
     }
 
-    const formattedPhone = formatPhoneNumber(phone);
+    const formattedPhone = `+91${phone}`;
     setLoading(true);
     try {
       if (!recaptchaRef.current) {
@@ -108,7 +108,7 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
       <p className={subtitleCls}>
         {step === "phone"
           ? "Enter the mobile number you used when purchasing"
-          : `OTP sent to ${formatPhoneNumber(phone)}`}
+          : `OTP sent to +91${phone}`}
       </p>
 
       <div className="flex flex-col gap-3 mb-4">

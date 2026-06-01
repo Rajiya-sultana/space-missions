@@ -24,7 +24,7 @@ interface StaticProduct {
   hoverBorderClass: string;
   total: number;
   href: string;
-  heroImage: string;
+  heroImage?: string;
   buyUrl: string;
 }
 
@@ -57,6 +57,20 @@ const PRODUCTS: StaticProduct[] = [
     heroImage: "/thumb-fun-science.jpg",
     buyUrl: "https://learnwhatmatters.in/products/fun-easy-science-experiments-for-kids-stem-workbook",
   },
+  {
+    slug: "young-hustler",
+    title: "Young Hustler",
+    tagline: "8 MODULES · AGES 12–18",
+    description: "Learn entrepreneurship, marketing, money, and business skills to become a teen hustler.",
+    emoji: "💡",
+    gradient: "from-teal-600 to-emerald-700",
+    accent: "#14b8a6",
+    hoverBorderClass: "hover:border-teal-400",
+    total: 8,
+    href: "/young-hustler",
+    heroImage: "/thumb-young-hustler.jpg",
+    buyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
+  },
 ];
 
 interface CardProps {
@@ -79,13 +93,17 @@ function CardUI({ product, owned, watched }: CardProps) {
         className={`relative bg-gradient-to-br ${product.gradient} flex items-center justify-center overflow-hidden flex-shrink-0`}
         style={{ height: "200px" }}
       >
-        <Image
-          src={product.heroImage}
-          alt={product.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 88vw, 33vw"
-        />
+        {product.heroImage ? (
+          <Image
+            src={product.heroImage}
+            alt={product.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 88vw, 33vw"
+          />
+        ) : (
+          <span className="text-[80px] z-10 relative select-none">{product.emoji}</span>
+        )}
         {!owned && (
           <div className="absolute inset-0 flex items-center justify-center z-10" style={{ background: "rgba(0,0,0,0.45)" }}>
             <span className="text-5xl">🔒</span>
@@ -180,10 +198,12 @@ export default function HubPage() {
   const { user, purchaseMap, loading, logout } = useAuth();
   const { completed: spaceCompleted } = useProgress("space-explorer");
   const { completed: funCompleted } = useProgress("fun-science");
+  const { completed: hustlerCompleted } = useProgress("young-hustler");
 
   const progressBySlug: Record<string, Set<number>> = {
     "space-explorer": spaceCompleted,
     "fun-science": funCompleted,
+    "young-hustler": hustlerCompleted,
   };
 
   const handleScroll = useCallback(() => {
@@ -201,7 +221,7 @@ export default function HubPage() {
     });
   };
 
-  const totalWatched = spaceCompleted.size + funCompleted.size;
+  const totalWatched = spaceCompleted.size + funCompleted.size + hustlerCompleted.size;
 
   return (
     <div className="min-h-screen" style={{ background: "#FFFDF8" }}>
@@ -319,7 +339,7 @@ export default function HubPage() {
           </div>
 
           {/* Desktop grid */}
-          <div className={`hidden md:grid gap-6 px-6 ${PRODUCTS.length === 1 ? "md:grid-cols-1 max-w-xs mx-auto" : PRODUCTS.length === 2 ? "md:grid-cols-2 max-w-[760px]" : "md:grid-cols-3"}`}>
+          <div className={`hidden md:grid gap-6 px-6 mx-auto w-full ${PRODUCTS.length === 1 ? "md:grid-cols-1 max-w-xs" : PRODUCTS.length === 2 ? "md:grid-cols-2 max-w-[760px]" : "md:grid-cols-3 max-w-6xl"}`}>
             {PRODUCTS.map((p) => (
               <CardUI
                 key={p.slug}

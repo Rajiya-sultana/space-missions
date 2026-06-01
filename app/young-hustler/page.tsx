@@ -1,213 +1,276 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { getProduct } from "@/data/products";
 import { missions } from "@/data/missions/young-hustler";
-import { MissionCard } from "@/components/MissionCard";
 import { MobileMissionList } from "@/components/MobileMissionList";
-import { StarBackground } from "@/components/StarBackground";
 
 export const metadata: Metadata = {
-  title: "Young Hustler — Mission HQ",
+  title: "Young Hustler — Module HQ",
   description:
-    "Learn money, entrepreneurship, marketing, and leadership skills to start your journey as a young entrepreneur!",
+    "Think Like a Hustler. Build Like a Hustler. 8 modules to launch your entrepreneurship journey.",
 };
+
+const NAVY  = "#0A1628";
+const GOLD  = "#FFB300";
+const TEAL  = "#14B8A6";
+const GREEN = "#22C55E";
+const BG    = "#F7F9FA";
+const INK   = "#1A2B4A";
+
 
 export default function YoungHustlerPage() {
   const product = getProduct("young-hustler")!;
 
   return (
-    <div className="relative min-h-screen">
-      <StarBackground />
+    <div className="min-h-screen" style={{ background: BG }}>
 
-      {/* Nebula blobs */}
-      <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-[120px]" />
-        <div className="absolute top-1/3 right-0 w-80 h-80 bg-blue-900/25 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-900/20 rounded-full blur-[80px]" />
-      </div>
+      {/* ── HEADER ── */}
+      <header className="sticky top-0 z-50 backdrop-blur-md" style={{ background: "transparent" }}>
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70"
+            style={{ color: INK }}
+          >
+            <span>←</span>
+            <span>Back</span>
+          </Link>
+          <span />
+          <a
+            href={product.shopifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold transition-opacity hover:opacity-70"
+            style={{ color: INK }}
+          >
+            Get the Workbook →
+          </a>
+        </div>
+      </header>
 
-      <div className="relative z-10">
-        {/* Header */}
-        <header className="sticky top-0 z-50 border-b border-white/5 bg-[#050714]/80 backdrop-blur-md">
-          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/"
-                className="flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-              >
-                <span>←</span>
-                <span>Back</span>
-              </Link>
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{product.icon}</span>
-                <span className="font-[family-name:var(--font-space)] font-bold text-white text-sm sm:text-base tracking-tight">
-                  Mission HQ
-                </span>
-              </div>
-            </div>
-            {product.shopifyProductId && (
-              <a
-                href={product.shopifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-slate-400 hover:text-orange-400 transition-colors hidden sm:block"
-              >
-                Get the Workbook →
-              </a>
-            )}
-          </div>
-        </header>
+      {/* ── HERO ── */}
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #142340 100%)`, paddingTop: "56px", paddingBottom: "56px" }}>
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-10">
 
-        {/* Hero */}
-        <section className="max-w-6xl mx-auto px-4 pt-12 pb-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          {/* Left: text */}
           <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-3 py-1 mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-              <span className="text-orange-300 text-xs font-semibold tracking-wide uppercase">
-                {product.title} Workbook
+            <div className="inline-flex items-center rounded-full px-4 py-1.5 mb-5" style={{ background: GOLD }}>
+              <span className="text-xs font-extrabold tracking-widest uppercase" style={{ color: NAVY }}>
+                Young Hustler — Teen Edition
               </span>
             </div>
 
-            <h1 className="font-[family-name:var(--font-space)] text-4xl sm:text-5xl font-bold text-white leading-tight mb-4">
-              Welcome,{" "}
-              <span className="shimmer-text">{product.tagline}!</span>
+            <h1 className="font-[family-name:var(--font-space)] text-4xl sm:text-5xl font-bold leading-tight mb-4 text-white">
+              Think it.{" "}
+              <span style={{ color: GOLD }}>Build it.</span>
+              <br />
+              <span style={{ color: TEAL }}>Launch it.</span>
             </h1>
 
-            <p className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-md mx-auto md:mx-0">
-              {product.description}
+            <p className="text-base sm:text-lg leading-relaxed mb-6 mx-auto md:mx-0" style={{ color: "rgba(255,255,255,0.75)", maxWidth: "440px" }}>
+              8 video modules across two powerful workbooks — designed to turn any teen into a real entrepreneur.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <span className="text-lg">🎖️</span>
-                <span>{missions.length} Mission Badges</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <span className="text-lg">🏆</span>
-                <span>1 Certificate</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <span className="text-lg">🎬</span>
-                <span>3D Animated Videos</span>
-              </div>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {[
+                { icon: "🎬", text: "8 Video Modules" },
+                { icon: "⚡", text: "72-Hour Challenge" },
+                { icon: "📒", text: "2 Workbooks" },
+              ].map(({ icon, text }) => (
+                <div key={text} className="flex items-center gap-2 text-sm" style={{ color: "rgba(255,255,255,0.80)" }}>
+                  <span>{icon}</span>
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="flex-shrink-0 flex items-center justify-center">
-            <div className="relative">
-              <div className="absolute inset-4 rounded-full bg-orange-500/20 blur-2xl" />
-              <div
-                className="relative mascot-float select-none"
-                style={{ fontSize: "140px", lineHeight: 1 }}
-              >
-                {product.icon}
-              </div>
-            </div>
+          {/* Right: book image */}
+          <div className="flex-shrink-0 w-full max-w-[400px] md:max-w-[420px]">
+            <Image
+              src="/hero-young-hustler.jpg"
+              alt="Think Like a Hustler & Build Like a Hustler — Teen Edition"
+              width={840}
+              height={480}
+              priority
+              className="w-full rounded-2xl object-cover shadow-2xl"
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="border-t border-white/5" />
+      {/* ── WAVE DIVIDER ── */}
+      <div style={{ background: "#142340", lineHeight: 0, marginBottom: "-2px" }}>
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "60px" }}>
+          <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill={BG} />
+        </svg>
+      </div>
+
+      {/* ── MODULE GRID ── */}
+      <section className="max-w-6xl mx-auto px-6 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-[family-name:var(--font-space)] text-xl font-bold" style={{ color: NAVY }}>
+            Choose Your Module
+          </h2>
+          <span className="text-xs font-mono" style={{ color: TEAL }}>
+            {missions.length} modules total
+          </span>
         </div>
 
-        {/* Mission grid */}
-        <section className="max-w-6xl mx-auto px-4 py-10">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-[family-name:var(--font-space)] text-xl font-bold text-white">
-              Choose Your Mission
-            </h2>
-            <span className="text-xs text-slate-500 font-mono">{missions.length} missions total</span>
+        {/* Book level labels */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <div className="flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: `${TEAL}15`, border: `1px solid ${TEAL}40` }}>
+            <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: TEAL }} />
+            <span className="text-xs font-semibold" style={{ color: TEAL }}>Level 1 — Think Like a Hustler · Modules 1–4</span>
           </div>
-
-          {/* Mobile list */}
-          <div className="md:hidden">
-            <MobileMissionList missions={missions} productSlug={product.slug} />
+          <div className="flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: `${GREEN}15`, border: `1px solid ${GREEN}40` }}>
+            <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: GREEN }} />
+            <span className="text-xs font-semibold" style={{ color: GREEN }}>Level 2 — Build Like a Hustler · Modules 5–8</span>
           </div>
+        </div>
 
-          {/* Desktop grid */}
-          <div className="hidden md:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {missions.map((mission) => (
-              <div key={mission.id} className="relative">
-                <MissionCard
-                  mission={mission}
-                  productSlug={product.slug}
-                />
+        {/* Mobile list */}
+        <div className="md:hidden mb-4">
+          <MobileMissionList
+            missions={missions}
+            productSlug="young-hustler"
+            pathSegment="module"
+            lightMode={true}
+            accentColor={TEAL}
+          />
+        </div>
 
-                {/* FREE badge on mission 1 */}
-                {mission.id === 1 && (
-                  <span
-                    className="absolute z-10 text-white font-extrabold pointer-events-none"
-                    style={{
-                      top: "10px",
-                      right: "10px",
-                      background: "#3DB549",
-                      fontSize: "10px",
-                      padding: "3px 10px",
-                      borderRadius: "99px",
-                    }}
-                  >
-                    FREE
-                  </span>
-                )}
+        {/* Desktop grid */}
+        <div className="hidden md:grid grid-cols-2 md:grid-cols-4 gap-4">
+          {missions.map((mission) => {
+            const accent = mission.id <= 4 ? TEAL : GREEN;
+            return (
+              <Link
+                key={mission.id}
+                href={`/young-hustler/module/${mission.id}`}
+                className="group block focus:outline-none"
+              >
+                <div
+                  className="h-full flex flex-col overflow-hidden transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.08)] group-hover:scale-[1.03] group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.14)]"
+                  style={{ background: "#ffffff", borderRadius: "16px", border: `1.5px solid ${accent}25` }}
+                >
+                  {/* Gradient top */}
+                  <div className={`relative h-36 bg-gradient-to-br ${mission.gradient} flex items-center justify-center overflow-hidden`}>
+                    {mission.thumbnail ? (
+                      <Image src={mission.thumbnail} alt={mission.subtitle} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,white,transparent_60%)]" />
+                        <span className="text-6xl drop-shadow-lg select-none">{mission.planet}</span>
+                      </>
+                    )}
 
-                {/* Locked overlay for missions 2+ */}
-                {mission.id > 1 && (
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
-                    style={{
-                      background: "rgba(0,0,0,0.55)",
-                      borderRadius: "16px",
-                      gap: "6px",
-                    }}
-                  >
-                    <span style={{ fontSize: "28px", color: "white" }}>🔒</span>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        color: "rgba(255,255,255,0.8)",
-                        fontWeight: 700,
-                      }}
-                    >
-                      Purchase to unlock
-                    </span>
+                    {/* Module badge */}
+                    <div className="absolute top-3 left-3 rounded-full px-2.5 py-0.5" style={{ background: NAVY }}>
+                      <span className="text-[10px] font-mono font-extrabold tracking-widest text-white uppercase">
+                        {mission.title}
+                      </span>
+                    </div>
+
+                    {/* FREE badge */}
+                    {mission.id === 1 && (
+                      <div className="absolute top-3 right-3 rounded-full px-2.5 py-0.5" style={{ background: GREEN }}>
+                        <span className="text-[10px] font-extrabold text-white uppercase">FREE</span>
+                      </div>
+                    )}
+
+                    {/* Level dot */}
+                    <div
+                      className="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full"
+                      style={{ background: accent, boxShadow: `0 0 6px ${accent}` }}
+                    />
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
 
-        {/* CTA */}
-        <section className="max-w-6xl mx-auto px-4 py-10">
-          <div className="glass-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-            <div className="text-5xl flex-shrink-0">🏆</div>
-            <div className="flex-1">
-              <h3 className="font-[family-name:var(--font-space)] font-bold text-white text-lg mb-1">
-                Complete all {missions.length} missions!
-              </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Watch every video, complete the activities in your workbook, and earn your{" "}
-                <span className="text-orange-400 font-semibold">Certified Explorer Certificate!</span>
-              </p>
-            </div>
-          </div>
-        </section>
+                  {/* Card body */}
+                  <div
+                    className="p-4 flex flex-col flex-1 gap-2"
+                    style={{ background: `linear-gradient(160deg, ${accent}08 0%, #ffffff 55%)` }}
+                  >
+                    <h3
+                      className="font-[family-name:var(--font-space)] text-base font-bold leading-tight"
+                      style={{ color: NAVY }}
+                    >
+                      {mission.subtitle}
+                    </h3>
+                    <p className="text-xs leading-relaxed flex-1" style={{ color: "rgba(26,43,74,0.60)" }}>
+                      {mission.description}
+                    </p>
+                    <div
+                      className="mt-2 flex items-center justify-end gap-1 font-bold text-xs"
+                      style={{ color: mission.videoUrl ? accent : `${accent}80` }}
+                    >
+                      {mission.videoUrl ? (
+                        <>
+                          <span>Watch Module</span>
+                          <span className="transition-transform group-hover:translate-x-1">→</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Coming Soon</span>
+                          <span>·</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="border-t border-white/5 mt-4">
-          <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
-            <span>© {new Date().getFullYear()} Learn What Matters. All rights reserved.</span>
-            <a
-              href="https://learnwhatmatters.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-slate-400 transition-colors"
-            >
-              learnwhatmatters.in
-            </a>
+      {/* ── CTA ── */}
+      <section className="max-w-6xl mx-auto px-6 pb-12">
+        <div
+          className="rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6"
+          style={{ background: NAVY }}
+        >
+          <div className="text-5xl flex-shrink-0">🏆</div>
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="font-[family-name:var(--font-space)] font-bold text-white text-lg mb-1">
+              Complete all {missions.length} modules!
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+              Watch every video and complete the workbook activities to become a{" "}
+              <span className="font-semibold" style={{ color: GOLD }}>real Young Hustler!</span>
+            </p>
           </div>
-        </footer>
-      </div>
+          <a
+            href={product.shopifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 font-bold rounded-xl px-6 py-3 text-sm transition-opacity hover:opacity-90"
+            style={{ background: GOLD, color: NAVY }}
+          >
+            Get the Workbook →
+          </a>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{ background: NAVY }}>
+        <div
+          className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
+          style={{ color: "rgba(255,255,255,0.40)" }}
+        >
+          <span>© {new Date().getFullYear()} Learn What Matters. All rights reserved.</span>
+          <a
+            href="https://learnwhatmatters.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-opacity hover:opacity-80"
+            style={{ color: TEAL }}
+          >
+            learnwhatmatters.in
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

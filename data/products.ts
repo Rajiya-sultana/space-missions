@@ -56,9 +56,9 @@ export const products: Product[] = [
     tagline: "Build your business brain",
     description:
       "Learn money, entrepreneurship, marketing, and leadership skills to start your journey as a young entrepreneur!",
-    shopifyProductId: "",
-    shopifyUrl: "https://learnwhatmatters.in",
-    gradient: "from-purple-600 via-violet-500 to-indigo-400",
+    shopifyProductId: "10532210344230",
+    shopifyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
+    gradient: "from-teal-600 via-emerald-500 to-green-400",
     icon: "💡",
   },
 ];
@@ -66,6 +66,7 @@ export const products: Product[] = [
 export const PRODUCT_ID_TO_SLUG: Record<string, ProductSlug> = {
   "10426881114406": "space-explorer",
   "10530952642854": "fun-science",
+  "10532210344230": "young-hustler",
 };
 
 export function getProduct(slug: string): Product | undefined {

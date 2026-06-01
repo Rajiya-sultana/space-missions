@@ -160,18 +160,17 @@ export function AddToHomeScreen() {
             </div>
 
             <div className="flex flex-col gap-3">
-              {platform.current === "ios" ? (
-                [
-                  { n: "1", icon: "⬆️", text: "Tap the Share button at the bottom of Safari" },
-                  { n: "2", icon: "➕", text: 'Scroll and tap "Add to Home Screen"' },
-                  { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
-                ]
-              ) : (
-                [
-                  { n: "1", icon: "⋮", text: "Tap the 3-dot menu in Chrome (top right)" },
-                  { n: "2", icon: "➕", text: 'Tap "Add to Home Screen"' },
-                  { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
-                ]
+              {(platform.current === "ios"
+                ? [
+                    { n: "1", icon: "⬆️", text: "Tap the Share button at the bottom of Safari" },
+                    { n: "2", icon: "➕", text: 'Scroll and tap "Add to Home Screen"' },
+                    { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
+                  ]
+                : [
+                    { n: "1", icon: "⋮", text: "Tap the 3-dot menu in Chrome (top right)" },
+                    { n: "2", icon: "➕", text: 'Tap "Add to Home Screen"' },
+                    { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
+                  ]
               ).map(({ n, icon, text }) => (
                 <div key={n} className="flex items-center gap-3">
                   <span

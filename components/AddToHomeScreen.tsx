@@ -31,13 +31,17 @@ export function AddToHomeScreen() {
       setShowIOSGuide(true);
       return;
     }
+    // Android with native prompt available
     if (deferredPrompt.current) {
       deferredPrompt.current.prompt();
       const { outcome } = await deferredPrompt.current.userChoice;
       deferredPrompt.current = null;
       if (outcome === "accepted") dismiss();
+      return;
     }
-  }, []);
+    // Android without native prompt — show manual guide
+    setShowIOSGuide(true);
+  }, [dismiss]);
 
   const dismiss = useCallback(() => {
     localStorage.setItem("a2hs-dismissed", "1");
@@ -53,16 +57,15 @@ export function AddToHomeScreen() {
     // only show on mobile
     if (platform.current === "other") return;
 
-    // Android: capture deferred prompt
+    // Always show banner on mobile (ios + android)
+    setShow(true);
+
+    // Capture Android native install prompt if available
     const onBeforeInstall = (e: Event) => {
       e.preventDefault();
       deferredPrompt.current = e;
-      setShow(true);
     };
     window.addEventListener("beforeinstallprompt", onBeforeInstall);
-
-    // iOS: always show banner (no install prompt API)
-    if (platform.current === "ios") setShow(true);
 
     // Shake detection
     let lastX = 0, lastY = 0, lastZ = 0, lastShake = 0;
@@ -151,15 +154,25 @@ export function AddToHomeScreen() {
           >
             <div className="text-center">
               <p className="text-white font-bold text-base">Add to Home Screen</p>
-              <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>3 quick steps in Safari</p>
+              <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>
+                {platform.current === "ios" ? "3 quick steps in Safari" : "3 quick steps in Chrome"}
+              </p>
             </div>
 
             <div className="flex flex-col gap-3">
-              {[
-                { n: "1", icon: "⬆️", text: "Tap the Share button at the bottom of Safari" },
-                { n: "2", icon: "➕", text: 'Scroll and tap "Add to Home Screen"' },
-                { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
-              ].map(({ n, icon, text }) => (
+              {platform.current === "ios" ? (
+                [
+                  { n: "1", icon: "⬆️", text: "Tap the Share button at the bottom of Safari" },
+                  { n: "2", icon: "➕", text: 'Scroll and tap "Add to Home Screen"' },
+                  { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
+                ]
+              ) : (
+                [
+                  { n: "1", icon: "⋮", text: "Tap the 3-dot menu in Chrome (top right)" },
+                  { n: "2", icon: "➕", text: 'Tap "Add to Home Screen"' },
+                  { n: "3", icon: "✅", text: 'Tap "Add" to confirm' },
+                ]
+              ).map(({ n, icon, text }) => (
                 <div key={n} className="flex items-center gap-3">
                   <span
                     className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-extrabold flex-shrink-0"
@@ -171,17 +184,6 @@ export function AddToHomeScreen() {
                   <span className="text-xl flex-shrink-0">{icon}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Arrow pointing down toward Safari share button */}
-            <div className="flex justify-center">
-              <div
-                className="rounded-xl px-4 py-2 text-xs font-semibold flex items-center gap-2"
-                style={{ background: "rgba(20,184,166,0.15)", color: "#14B8A6" }}
-              >
-                <span>👇</span>
-                <span>Share button is at the bottom of your screen</span>
-              </div>
             </div>
 
             <button

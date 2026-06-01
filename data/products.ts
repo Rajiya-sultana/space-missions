@@ -58,7 +58,7 @@ export const products: Product[] = [
       "Learn money, entrepreneurship, marketing, and leadership skills to start your journey as a young entrepreneur!",
     shopifyProductId: "10532210344230",
     shopifyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
-    gradient: "from-purple-600 via-violet-500 to-indigo-400",
+    gradient: "from-teal-600 via-emerald-500 to-green-400",
     icon: "💡",
   },
 ];

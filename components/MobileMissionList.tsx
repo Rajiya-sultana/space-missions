@@ -10,13 +10,21 @@ interface Props {
   productSlug: string;
   pathSegment?: string;
   label?: string;
+  lightMode?: boolean;
+  accentColor?: string;
 }
 
-export function MobileMissionList({ missions, productSlug, pathSegment = "mission", label = "MISSION" }: Props) {
+export function MobileMissionList({ missions, productSlug, pathSegment = "mission", label = "MISSION", lightMode = false, accentColor = "#22c55e" }: Props) {
   const { completed } = useProgress(productSlug);
 
   const nextMission = missions.find((m) => !completed.has(m.id));
   const hasStarted = completed.size > 0;
+
+  const rowBg      = lightMode ? "#ffffff" : "rgba(255,255,255,0.08)";
+  const rowBorder  = lightMode ? "rgba(0,0,0,0.07)" : "rgba(255,255,255,0.11)";
+  const labelColor = lightMode ? "rgba(26,43,74,0.40)" : "rgba(255,255,255,0.40)";
+  const titleColor = lightMode ? "#0A1628" : "white";
+  const chevron    = lightMode ? "rgba(26,43,74,0.20)" : "rgba(255,255,255,0.25)";
 
   return (
     <div>
@@ -28,8 +36,8 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
           style={{
             padding: "16px 18px",
             borderRadius: "20px",
-            background: "rgba(16, 55, 38, 0.85)",
-            border: "1.5px solid rgba(34,197,94,0.45)",
+            background: lightMode ? `${accentColor}12` : "rgba(16,55,38,0.85)",
+            border: `1.5px solid ${accentColor}70`,
             gap: "14px",
           }}
         >
@@ -37,27 +45,25 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
             <div
               className="flex items-center justify-center flex-shrink-0"
               style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "50%",
-                background: "rgba(34,197,94,0.2)",
-                border: "1.5px solid rgba(34,197,94,0.4)",
+                width: "44px", height: "44px", borderRadius: "50%",
+                background: `${accentColor}25`,
+                border: `1.5px solid ${accentColor}60`,
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="#22c55e">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill={accentColor}>
                 <path d="M4 2.5l9 5.5-9 5.5V2.5z" />
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: "10px", fontWeight: 800, color: "#22c55e", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "2px" }}>
+              <p style={{ fontSize: "10px", fontWeight: 800, color: accentColor, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "2px" }}>
                 Continue
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 700, color: "white" }}>
+              <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor }}>
                 {nextMission.subtitle}
               </p>
             </div>
           </div>
-          <span style={{ fontSize: "20px", color: "#22c55e" }}>→</span>
+          <span style={{ fontSize: "20px", color: accentColor }}>→</span>
         </Link>
       )}
 
@@ -68,14 +74,14 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
           style={{
             padding: "16px 18px",
             borderRadius: "20px",
-            background: "rgba(55, 40, 10, 0.85)",
-            border: "1.5px solid rgba(234,179,8,0.4)",
+            background: lightMode ? "rgba(255,179,0,0.08)" : "rgba(55,40,10,0.85)",
+            border: `1.5px solid rgba(234,179,8,0.4)`,
           }}
         >
           <span style={{ fontSize: "22px" }}>🏆</span>
           <div>
-            <p style={{ fontSize: "13px", fontWeight: 700, color: "#facc15" }}>All done!</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>Complete your workbook to earn your certificate.</p>
+            <p style={{ fontSize: "13px", fontWeight: 700, color: "#d97706" }}>All done!</p>
+            <p style={{ fontSize: "11px", color: lightMode ? "rgba(26,43,74,0.5)" : "rgba(255,255,255,0.5)" }}>You've completed all modules. Keep hustling!</p>
           </div>
         </div>
       )}
@@ -90,24 +96,19 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
             padding: "18px 16px",
             gap: "16px",
             borderRadius: "20px",
-            background: "rgba(255,255,255,0.08)",
-            border: `1.5px solid ${completed.has(mission.id) ? "rgba(34,197,94,0.35)" : "rgba(255,255,255,0.11)"}`,
-            backdropFilter: "blur(8px)",
+            background: rowBg,
+            border: `1.5px solid ${completed.has(mission.id) ? `${accentColor}50` : rowBorder}`,
+            backdropFilter: lightMode ? undefined : "blur(8px)",
+            boxShadow: lightMode ? "0 1px 4px rgba(0,0,0,0.05)" : undefined,
           }}
         >
           {/* Icon */}
           <div
             className={`bg-gradient-to-br ${mission.gradient} flex items-center justify-center flex-shrink-0 relative overflow-hidden`}
-            style={{ width: "56px", height: "56px", borderRadius: "14px", fontSize: "28px" }}
+            style={{ width: mission.thumbnail ? "96px" : "56px", height: "56px", borderRadius: mission.thumbnail ? "6px" : "14px", fontSize: "28px" }}
           >
             {mission.thumbnail ? (
-              <Image
-                src={mission.thumbnail}
-                alt={mission.subtitle}
-                fill
-                className="object-cover"
-                sizes="56px"
-              />
+              <Image src={mission.thumbnail} alt={mission.subtitle} fill className="object-cover" sizes="96px" />
             ) : (
               mission.planet
             )}
@@ -116,26 +117,24 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
           {/* Text */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span style={{ fontSize: "10px", fontWeight: 800, color: "rgba(255,255,255,0.4)", letterSpacing: "1.5px", textTransform: "uppercase" }}>
+              <span style={{ fontSize: "10px", fontWeight: 800, color: labelColor, letterSpacing: "1.5px", textTransform: "uppercase" }}>
                 {label} {mission.id}
               </span>
               {mission.id === 1 && (
                 <span
                   style={{
-                    fontSize: "9px",
-                    fontWeight: 800,
-                    color: "white",
-                    background: "rgba(255,255,255,0.12)",
-                    border: "1px solid rgba(255,255,255,0.28)",
-                    padding: "2px 9px",
-                    borderRadius: "99px",
+                    fontSize: "9px", fontWeight: 800,
+                    color: lightMode ? accentColor : "white",
+                    background: lightMode ? `${accentColor}15` : "rgba(255,255,255,0.12)",
+                    border: `1px solid ${lightMode ? `${accentColor}50` : "rgba(255,255,255,0.28)"}`,
+                    padding: "2px 9px", borderRadius: "99px",
                   }}
                 >
                   FREE
                 </span>
               )}
             </div>
-            <p style={{ fontSize: "16px", fontWeight: 700, color: "white" }} className="truncate">
+            <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor }} className="truncate">
               {mission.subtitle}
             </p>
           </div>
@@ -144,14 +143,14 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
           {completed.has(mission.id) ? (
             <div
               className="flex-shrink-0 flex items-center justify-center"
-              style={{ width: "28px", height: "28px", borderRadius: "50%", background: "#22c55e" }}
+              style={{ width: "28px", height: "28px", borderRadius: "50%", background: accentColor }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
           ) : (
-            <span className="flex-shrink-0" style={{ fontSize: "20px", color: "rgba(255,255,255,0.25)" }}>›</span>
+            <span className="flex-shrink-0" style={{ fontSize: "20px", color: chevron }}>›</span>
           )}
         </Link>
       ))}

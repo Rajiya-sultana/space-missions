@@ -4,7 +4,6 @@ import Link from "next/link";
 import { getProduct } from "@/data/products";
 import { missions } from "@/data/missions/young-hustler";
 import { MobileMissionList } from "@/components/MobileMissionList";
-import { AddToHomeScreen } from "@/components/AddToHomeScreen";
 
 export const metadata: Metadata = {
   title: "Young Hustler — Module HQ",
@@ -273,7 +272,6 @@ export default function YoungHustlerPage() {
         </div>
       </footer>
 
-      <AddToHomeScreen />
     </div>
   );
 }

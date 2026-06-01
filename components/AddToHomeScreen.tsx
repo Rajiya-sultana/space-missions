@@ -156,7 +156,7 @@ export function AddToHomeScreen() {
   const deferredPrompt              = useRef<any>(null);
 
   const dismiss = useCallback(() => {
-    localStorage.setItem("a2hs-dismissed", "1");
+    localStorage.setItem("a2hs-dismissed-at", String(Date.now()));
     setShow(false);
     setShowGuide(false);
   }, []);
@@ -175,8 +175,10 @@ export function AddToHomeScreen() {
   useEffect(() => {
     platform.current = detectPlatform();
     if (isStandalone()) return;
-    if (localStorage.getItem("a2hs-dismissed")) return;
     if (platform.current === "other") return;
+    const dismissedAt = localStorage.getItem("a2hs-dismissed-at");
+    const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+    if (dismissedAt && Date.now() - Number(dismissedAt) < THIRTY_DAYS) return;
 
     setShow(true);
 

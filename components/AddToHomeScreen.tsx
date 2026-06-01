@@ -26,6 +26,12 @@ export function AddToHomeScreen() {
   const platform                       = useRef<Platform>("other");
   const deferredPrompt                 = useRef<any>(null);
 
+  const dismiss = useCallback(() => {
+    localStorage.setItem("a2hs-dismissed", "1");
+    setShow(false);
+    setShowIOSGuide(false);
+  }, []);
+
   const triggerInstall = useCallback(async () => {
     if (platform.current === "ios") {
       setShowIOSGuide(true);
@@ -42,12 +48,6 @@ export function AddToHomeScreen() {
     // Android without native prompt — show manual guide
     setShowIOSGuide(true);
   }, [dismiss]);
-
-  const dismiss = useCallback(() => {
-    localStorage.setItem("a2hs-dismissed", "1");
-    setShow(false);
-    setShowIOSGuide(false);
-  }, []);
 
   useEffect(() => {
     platform.current = detectPlatform();

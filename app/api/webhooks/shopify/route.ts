@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { supabase } from "@/lib/supabase-admin";
-import { PRODUCT_ID_TO_SLUG } from "@/data/products";
+import { PRODUCT_ID_TO_SLUG, BUNDLE_ID_TO_SLUGS } from "@/data/products";
 
 function normalizePhone(phone: string | null | undefined): string | null {
   if (!phone) return null;
@@ -44,21 +44,30 @@ export async function POST(req: NextRequest) {
   const rows: object[] = [];
 
   for (const item of lineItems) {
-    const productSlug = PRODUCT_ID_TO_SLUG[String(item.product_id)];
-    if (!productSlug) continue;
-
-    rows.push({
+    const pid = String(item.product_id);
+    const base = {
       phone_number: phoneNumber,
-      product_slug: productSlug,
       order_id: String(order.id),
       product_name: item.title,
-      product_id: String(item.product_id),
+      product_id: pid,
       amount: parseFloat(order.total_price ?? "0"),
       currency: order.currency ?? "INR",
       payment_status: order.financial_status ?? "paid",
       customer_name: `${customer?.first_name ?? ""} ${customer?.last_name ?? ""}`.trim(),
       customer_email: customerEmail,
-    });
+    };
+
+    // Bundle — write one row per product it unlocks
+    const bundleSlugs = BUNDLE_ID_TO_SLUGS[pid];
+    if (bundleSlugs) {
+      for (const slug of bundleSlugs) rows.push({ ...base, product_slug: slug });
+      continue;
+    }
+
+    // Single product
+    const productSlug = PRODUCT_ID_TO_SLUG[pid];
+    if (!productSlug) continue;
+    rows.push({ ...base, product_slug: productSlug });
   }
 
   if (rows.length === 0) {

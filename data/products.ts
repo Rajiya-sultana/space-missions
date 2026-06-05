@@ -69,6 +69,11 @@ export const PRODUCT_ID_TO_SLUG: Record<string, ProductSlug> = {
   "10532210344230": "young-hustler",
 };
 
+// Bundle product IDs that unlock multiple products at once
+export const BUNDLE_ID_TO_SLUGS: Record<string, ProductSlug[]> = {
+  "10547871940902": ["space-explorer", "fun-science", "young-hustler"],
+};
+
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }

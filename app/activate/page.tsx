@@ -9,7 +9,7 @@ export default function ActivatePage() {
   return (
     <main
       style={{ background: "#FFFDF8" }}
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-start justify-center pt-8 px-4 pb-4"
     >
       <Suspense fallback={<div className="text-gray-400 text-sm">Loading…</div>}>
         <ActivateForm />

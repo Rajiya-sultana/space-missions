@@ -1,17 +1,19 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function WelcomeToast() {
   const { justLoggedIn } = useAuth();
+  const pathname = usePathname();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (justLoggedIn) {
+    if (justLoggedIn && !pathname.startsWith("/activate")) {
       setShow(true);
       setTimeout(() => setShow(false), 4000);
     }
-  }, [justLoggedIn]);
+  }, [justLoggedIn, pathname]);
 
   if (!show) return null;
 

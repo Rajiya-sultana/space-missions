@@ -219,7 +219,7 @@ export default function ActivateForm() {
         <button
           onClick={mode === "register" ? handleRegister : handleSignIn}
           disabled={loading}
-          className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-3 text-sm transition-colors mb-4"
+          className="w-3/4 mx-auto block bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg py-2 text-sm transition-colors mb-4"
         >
           {loading
             ? "Please wait…"

@@ -69,19 +69,6 @@ const PRODUCTS: StaticProduct[] = [
     heroImage: "/thumb-young-hustler.jpg",
     buyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
   },
-  {
-    slug: "financial-literacy",
-    title: "Financial Literacy",
-    tagline: "15 LESSONS · 3 BOOKS · AGES 6–14",
-    description: "From discovering what money is to thinking like a money pro — three books, 15 lessons that build real financial confidence.",
-    emoji: "💰",
-    gradient: "from-amber-400 to-orange-500",
-    accent: "#F59E0B",
-    hoverBorderClass: "hover:border-amber-400",
-    total: 15,
-    href: "/financial-literacy",
-    buyUrl: "https://learnwhatmatters.in",
-  },
 ];
 
 interface CardProps {

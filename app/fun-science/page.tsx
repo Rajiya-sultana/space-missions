@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { missions } from "@/data/missions/fun-science";
 import { MobileMissionList } from "@/components/MobileMissionList";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const metadata: Metadata = {
   title: "Fun Science — Learn What Matters",
@@ -50,36 +51,31 @@ export default function FunSciencePage() {
         className="sticky top-0 z-50 backdrop-blur-md"
         style={{ background: "transparent", borderBottom: "none" }}
       >
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70"
-            style={{ color: "#0D2244" }}
-          >
-            <span>←</span>
-            <span>Back</span>
-          </Link>
-
-          <span />
-
-          <a
-            href="https://learnwhatmatters.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold transition-opacity hover:opacity-80 hidden sm:block"
-            style={{ color: "#0D2244" }}
-          >
-            Get the Workbook →
-          </a>
-          <a
-            href="https://learnwhatmatters.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-semibold sm:hidden"
-            style={{ color: "#0D2244" }}
-          >
-            Get the Workbook →
-          </a>
+        <div className="max-w-6xl mx-auto px-6 h-14 grid grid-cols-3 items-center">
+          <div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm font-medium transition-opacity hover:opacity-70 w-fit"
+              style={{ color: "#0D2244" }}
+            >
+              <span>←</span>
+              <span>Back</span>
+            </Link>
+          </div>
+          <div className="flex justify-center">
+            <BrandLogo dark={false} />
+          </div>
+          <div className="flex justify-end">
+            <a
+              href="https://learnwhatmatters.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-semibold transition-opacity hover:opacity-80"
+              style={{ color: "#0D2244" }}
+            >
+              Get the Workbook →
+            </a>
+          </div>
         </div>
       </header>
 

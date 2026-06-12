@@ -6,9 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
-
-const LOGO =
-  "https://learnwhatmatters.in/cdn/shop/files/Learn_what_matters_Logo.png?v=1775811659&width=300";
+import { BrandLogo } from "@/components/BrandLogo";
 const GOLD = "#fc9c00";
 const NAVY = "#0D2244";
 const PURPLE = "#3b0a45";
@@ -70,6 +68,19 @@ const PRODUCTS: StaticProduct[] = [
     href: "/young-hustler",
     heroImage: "/thumb-young-hustler.jpg",
     buyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
+  },
+  {
+    slug: "financial-literacy",
+    title: "Financial Literacy",
+    tagline: "15 LESSONS · 3 BOOKS · AGES 6–14",
+    description: "From discovering what money is to thinking like a money pro — three books, 15 lessons that build real financial confidence.",
+    emoji: "💰",
+    gradient: "from-amber-400 to-orange-500",
+    accent: "#F59E0B",
+    hoverBorderClass: "hover:border-amber-400",
+    total: 15,
+    href: "/financial-literacy",
+    buyUrl: "https://learnwhatmatters.in",
   },
 ];
 
@@ -232,9 +243,7 @@ export default function HubPage() {
         style={{ borderBottom: "2px solid #F0F0F0", height: "64px" }}
       >
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
-          <a href="/">
-            <Image src={LOGO} alt="Learn What Matters" width={80} height={40} unoptimized style={{ objectFit: "contain" }} />
-          </a>
+          <BrandLogo dark={false} />
           {!loading && (
             user ? (
               <div className="flex items-center gap-3">
@@ -400,7 +409,7 @@ export default function HubPage() {
       <footer style={{ background: "#1a0a2e", paddingTop: "32px", paddingBottom: "32px" }}>
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Image src={LOGO} alt="Learn What Matters" width={64} height={32} unoptimized style={{ objectFit: "contain", filter: "brightness(0) invert(1)", opacity: 0.5 }} />
+            <Image src="/logo.png" alt="Learn What Matters" width={64} height={32} style={{ objectFit: "contain", filter: "brightness(0) invert(1)", opacity: 0.5 }} />
             <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>© {new Date().getFullYear()} Learn What Matters</span>
           </div>
           <a href="https://learnwhatmatters.in" target="_blank" rel="noopener noreferrer" className="font-semibold text-sm hover:underline" style={{ color: GOLD }}>

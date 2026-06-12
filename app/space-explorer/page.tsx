@@ -6,6 +6,7 @@ import { missions } from "@/data/missions/space-explorer";
 import { MissionGrid } from "@/components/MissionGrid";
 import { MobileMissionList } from "@/components/MobileMissionList";
 import { StarBackground } from "@/components/StarBackground";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const metadata: Metadata = {
   title: "Space Explorer — Mission HQ",
@@ -30,32 +31,31 @@ export default function SpaceExplorerPage() {
       <div className="relative z-10">
         {/* Header */}
         <header className="sticky top-0 z-50 border-b border-white/5 bg-[#050714]/80 backdrop-blur-md">
-          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-            <div className="flex items-center gap-4">
+          <div className="max-w-6xl mx-auto px-4 h-14 grid grid-cols-3 items-center">
+            <div>
               <Link
                 href="/"
-                className="flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-1.5 text-sm font-medium text-slate-400 hover:text-white transition-colors w-fit"
               >
                 <span>←</span>
                 <span>Back</span>
               </Link>
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{product.icon}</span>
-                <span className="font-[family-name:var(--font-space)] font-bold text-white text-sm sm:text-base tracking-tight">
-                  Mission HQ
-                </span>
-              </div>
             </div>
-            {product.shopifyProductId && (
-              <a
-                href={product.shopifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-slate-400 hover:text-orange-400 transition-colors hidden sm:block"
-              >
-                Get the Workbook →
-              </a>
-            )}
+            <div className="flex justify-center">
+              <BrandLogo dark={true} />
+            </div>
+            <div className="flex justify-end">
+              {product.shopifyProductId && (
+                <a
+                  href={product.shopifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-slate-400 hover:text-orange-400 transition-colors hidden sm:block"
+                >
+                  Get the Workbook →
+                </a>
+              )}
+            </div>
           </div>
         </header>
 

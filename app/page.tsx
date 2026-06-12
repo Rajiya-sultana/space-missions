@@ -396,7 +396,7 @@ export default function HubPage() {
       <footer style={{ background: "#1a0a2e", paddingTop: "32px", paddingBottom: "32px" }}>
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Learn What Matters" width={64} height={32} style={{ objectFit: "contain", filter: "brightness(0) invert(1)", opacity: 0.5 }} />
+            <Image src="/logo.png" alt="Learn What Matters" width={80} height={40} style={{ objectFit: "contain" }} />
             <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>© {new Date().getFullYear()} Learn What Matters</span>
           </div>
           <a href="https://learnwhatmatters.in" target="_blank" rel="noopener noreferrer" className="font-semibold text-sm hover:underline" style={{ color: GOLD }}>

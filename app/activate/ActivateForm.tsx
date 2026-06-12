@@ -156,7 +156,7 @@ export default function ActivateForm() {
     <div className="w-full max-w-sm">
       {/* Brand */}
       <div className="text-center mb-6">
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-3">
           <BrandLogo dark={false} />
         </div>
         <h1 className="text-lg font-bold mt-1 leading-snug" style={{ color: "#111827", textShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
@@ -169,7 +169,8 @@ export default function ActivateForm() {
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-8">
+      <div className="bg-white border border-gray-200 shadow-sm rounded-2xl">
+        <div className="p-8">
         <div className="flex flex-col gap-3 mb-4">
           <input
             type="email"
@@ -255,6 +256,7 @@ export default function ActivateForm() {
           >
             <WhatsAppIcon /> Need help? Chat with us
           </a>
+        </div>
         </div>
       </div>
     </div>

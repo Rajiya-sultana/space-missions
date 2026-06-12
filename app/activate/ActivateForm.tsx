@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase-client";
 import { products } from "@/data/products";
+import { BrandLogo } from "@/components/BrandLogo";
 
 type Mode = "register" | "signin";
 
@@ -155,12 +156,16 @@ export default function ActivateForm() {
     <div className="w-full max-w-sm">
       {/* Brand */}
       <div className="text-center mb-6">
-        <div className="text-5xl mb-2">{product.icon}</div>
-        <h1 className="text-xl font-bold text-gray-900">{product.title}</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <div className="flex justify-center mb-4">
+          <BrandLogo dark={false} />
+        </div>
+        <h1 className="text-lg font-bold mt-1 leading-snug" style={{ color: "#111827", textShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
+          {product.activateTitle ?? product.title}
+        </h1>
+        <p className="text-gray-400 text-xs mt-1">
           {mode === "register"
-            ? "Create your account to unlock your videos"
-            : "Sign in to unlock your videos"}
+            ? "Create a free account to unlock your access"
+            : "Sign in to unlock your access"}
         </p>
       </div>
 

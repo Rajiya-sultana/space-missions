@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebase-client";
 import { validatePhoneNumber } from "@/lib/phone-utils";
@@ -18,6 +18,13 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
   const confirmationRef = useRef<ConfirmationResult | null>(null);
   const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
 
+  useEffect(() => {
+    return () => {
+      recaptchaRef.current?.clear();
+      recaptchaRef.current = null;
+    };
+  }, []);
+
   async function handleSendOTP() {
     setError("");
     if (!validatePhoneNumber(phone)) {
@@ -28,11 +35,13 @@ export default function PhoneLoginComponent({ lightMode = false }: Props) {
     const formattedPhone = `+91${phone}`;
     setLoading(true);
     try {
-      if (!recaptchaRef.current) {
-        recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, "recaptcha-container", {
-          size: "invisible",
-        });
+      if (recaptchaRef.current) {
+        recaptchaRef.current.clear();
+        recaptchaRef.current = null;
       }
+      recaptchaRef.current = new RecaptchaVerifier(firebaseAuth, "recaptcha-container", {
+        size: "invisible",
+      });
       const result = await signInWithPhoneNumber(firebaseAuth, formattedPhone, recaptchaRef.current);
       confirmationRef.current = result;
       setStep("otp");

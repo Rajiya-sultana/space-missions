@@ -36,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
     >
-      <body className="min-h-full bg-[#050714] text-slate-50 antialiased">
+      <body className="min-h-full bg-[#050714] text-slate-50 antialiased" suppressHydrationWarning>
         <AuthProvider>
           {children}
           <WelcomeToast />

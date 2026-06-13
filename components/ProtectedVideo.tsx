@@ -80,7 +80,7 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
         </div>
 
         <a
-          href={`https://wa.me/919263358336?text=${encodeURIComponent("Hi! I bought the Learn What Matters workbook on Amazon and I need help activating my video access. My number is: ")}`}
+          href={`https://wa.me/919263358336?text=${encodeURIComponent("Hi! I already bought the Learn What Matters workbook but I'm unable to access the videos. Can you please help me?")}`}
           target="_blank"
           rel="noopener noreferrer"
           className={`inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2.5 rounded-lg border transition-colors mb-5 ${lightMode ? "text-green-700 border-green-400 hover:bg-green-50" : "text-green-400 border-green-500/50 hover:bg-green-500/10"}`}

@@ -71,10 +71,10 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
       <div style={centeredCard} className={cardCls}>
         {/* Amazon callout — top */}
         <div className={`rounded-xl px-4 py-3 mb-3 text-left ${lightMode ? "bg-amber-50 border border-amber-200" : "bg-amber-500/10 border border-amber-500/20"}`}>
-          <p className={`text-xs font-semibold mb-0.5 ${lightMode ? "text-amber-700" : "text-amber-400"}`}>
+          <p className={`text-sm font-bold mb-1 ${lightMode ? "text-amber-700" : "text-amber-400"}`}>
             📦 Bought this on Amazon?
           </p>
-          <p className={`text-xs leading-relaxed ${lightMode ? "text-amber-800" : "text-amber-300/80"}`}>
+          <p className={`text-sm leading-relaxed ${lightMode ? "text-amber-800" : "text-amber-300/80"}`}>
             Send us a quick WhatsApp message and we&apos;ll get your videos unlocked in minutes!
           </p>
         </div>

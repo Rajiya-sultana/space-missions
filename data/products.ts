@@ -1,4 +1,4 @@
-export type ProductSlug = "space-explorer" | "fun-science" | "young-hustler" | "financial-literacy";
+export type ProductSlug = "space-explorer" | "fun-science" | "young-hustler" | "financial-literacy" | "ai-for-kids";
 
 export type Mission = {
   id: number;
@@ -79,6 +79,18 @@ export const products: Product[] = [
     gradient: "from-teal-600 via-emerald-500 to-green-400",
     icon: "💡",
     heroImage: "/hero-young-hustler.jpg",
+  },
+  {
+    slug: "ai-for-kids",
+    title: "AI for Kids",
+    activateTitle: "AI for Kids — 3-Level Bundle",
+    tagline: "Learn AI from the ground up",
+    description:
+      "Three books, 32 video lessons — discover what AI is, become an AI Field Operator, and level up to AI Mission Pro with AIRA!",
+    shopifyProductId: "",
+    shopifyUrl: "https://learnwhatmatters.in",
+    gradient: "from-violet-600 via-purple-500 to-indigo-500",
+    icon: "🤖",
   },
 ];
 

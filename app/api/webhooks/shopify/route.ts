@@ -5,7 +5,9 @@ import { PRODUCT_ID_TO_SLUG, BUNDLE_ID_TO_SLUGS } from "@/data/products";
 
 function normalizePhone(phone: string | null | undefined): string | null {
   if (!phone) return null;
-  const digits = phone.replace(/\D/g, "");
+  let digits = phone.replace(/\D/g, "");
+  // Strip a leading 0 (Indian numbers sometimes entered as 0XXXXXXXXXX)
+  if (digits.startsWith("0")) digits = digits.slice(1);
   if (digits.length === 10) return `+91${digits}`;
   if (digits.length === 12 && digits.startsWith("91")) return `+${digits}`;
   if (digits.length > 10) return `+${digits}`;

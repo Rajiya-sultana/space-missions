@@ -69,6 +69,32 @@ const PRODUCTS: StaticProduct[] = [
     heroImage: "/thumb-young-hustler.jpg",
     buyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
   },
+  {
+    slug: "financial-literacy",
+    title: "Financial Literacy",
+    tagline: "15 LESSONS · 3 BOOKS · AGES 6–14",
+    description: "From discovering what money is to thinking like a money pro — three books, 15 lessons that build real financial confidence.",
+    emoji: "💰",
+    gradient: "from-amber-400 to-orange-500",
+    accent: "#F59E0B",
+    hoverBorderClass: "hover:border-amber-400",
+    total: 15,
+    href: "/financial-literacy",
+    buyUrl: "https://learnwhatmatters.in",
+  },
+  {
+    slug: "ai-for-kids",
+    title: "AI for Kids",
+    tagline: "32 LESSONS · 3 BOOKS · AGES 8–14",
+    description: "Meet AIRA and explore AI across 3 levels — from what AI is to building your own AI ideas. Three books, 32 video lessons!",
+    emoji: "🤖",
+    gradient: "from-violet-600 to-purple-800",
+    accent: "#8B5CF6",
+    hoverBorderClass: "hover:border-violet-400",
+    total: 32,
+    href: "/ai-for-kids",
+    buyUrl: "https://learnwhatmatters.in",
+  },
 ];
 
 interface CardProps {
@@ -197,11 +223,13 @@ export default function HubPage() {
   const { completed: spaceCompleted } = useProgress("space-explorer");
   const { completed: funCompleted } = useProgress("fun-science");
   const { completed: hustlerCompleted } = useProgress("young-hustler");
+  const { completed: aiCompleted } = useProgress("ai-for-kids");
 
   const progressBySlug: Record<string, Set<number>> = {
     "space-explorer": spaceCompleted,
     "fun-science": funCompleted,
     "young-hustler": hustlerCompleted,
+    "ai-for-kids": aiCompleted,
   };
 
   const handleScroll = useCallback(() => {
@@ -219,7 +247,7 @@ export default function HubPage() {
     });
   };
 
-  const totalWatched = spaceCompleted.size + funCompleted.size + hustlerCompleted.size;
+  const totalWatched = spaceCompleted.size + funCompleted.size + hustlerCompleted.size + aiCompleted.size;
 
   return (
     <div className="min-h-screen" style={{ background: "#FFFDF8" }}>

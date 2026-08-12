@@ -85,6 +85,7 @@ export const products: Product[] = [
 export const PRODUCT_ID_TO_SLUG: Record<string, ProductSlug> = {
   "10426881114406": "space-explorer",
   "10530952642854": "fun-science",
+  "10631554859302": "fun-science",
   "10532210344230": "young-hustler",
 };
 

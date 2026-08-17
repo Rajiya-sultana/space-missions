@@ -6,7 +6,7 @@ import { missions, books } from "@/data/missions/ai-for-kids";
 import ProtectedVideo from "@/components/ProtectedVideo";
 import { BrandLogo } from "@/components/BrandLogo";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ book: string; id: string }> };
 
 const BG   = "#F5EEFF";
 const NAVY = "#1C1B4B";
@@ -68,7 +68,7 @@ export default async function AiLessonPage({ params }: Props) {
           </Link>
           <BrandLogo />
           <a
-            href="https://learnwhatmatters.in"
+            href="https://learnwhatmatters.in/products/ai-for-kids"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-semibold transition-opacity hover:opacity-70"
@@ -84,7 +84,7 @@ export default async function AiLessonPage({ params }: Props) {
         <div className="flex items-center gap-3">
           {prevMission ? (
             <Link
-              href={`/ai-for-kids/lesson/${prevMission.id}`}
+              href={`/ai-for-kids/book${prevMission.book}/lesson/${prevMission.id}`}
               className="flex-1 rounded-xl px-4 py-3 flex items-center gap-3 border hover:shadow-sm transition-all"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >
@@ -98,7 +98,7 @@ export default async function AiLessonPage({ params }: Props) {
 
           {nextMission ? (
             <Link
-              href={`/ai-for-kids/lesson/${nextMission.id}`}
+              href={`/ai-for-kids/book${nextMission.book}/lesson/${nextMission.id}`}
               className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >

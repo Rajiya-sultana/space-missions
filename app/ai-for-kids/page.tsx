@@ -264,7 +264,7 @@ export default function AiForKidsPage() {
                 <MobileMissionList
                   missions={bookMissions}
                   productSlug="ai-for-kids"
-                  pathSegment="lesson"
+                  basePath={`/ai-for-kids/book${book.number}/lesson`}
                   lightMode={true}
                   accentColor={book.accent}
                   label="LESSON"
@@ -276,7 +276,7 @@ export default function AiForKidsPage() {
                 {bookMissions.map((mission) => (
                   <Link
                     key={mission.id}
-                    href={`/ai-for-kids/lesson/${mission.id}`}
+                    href={`/ai-for-kids/book${mission.book}/lesson/${mission.id}`}
                     className="group block focus:outline-none"
                   >
                     <div

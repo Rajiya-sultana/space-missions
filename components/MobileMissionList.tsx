@@ -9,12 +9,13 @@ interface Props {
   missions: Mission[];
   productSlug: string;
   pathSegment?: string;
+  basePath?: string; // overrides /${productSlug}/${pathSegment} when set
   label?: string;
   lightMode?: boolean;
   accentColor?: string;
 }
 
-export function MobileMissionList({ missions, productSlug, pathSegment = "mission", label = "MISSION", lightMode = false, accentColor = "#22c55e" }: Props) {
+export function MobileMissionList({ missions, productSlug, pathSegment = "mission", basePath, label = "MISSION", lightMode = false, accentColor = "#22c55e" }: Props) {
   const { completed } = useProgress(productSlug);
 
   const nextMission = missions.find((m) => !completed.has(m.id));
@@ -31,7 +32,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
       {/* Continue banner */}
       {hasStarted && nextMission && (
         <Link
-          href={`/${productSlug}/${pathSegment}/${nextMission.id}`}
+          href={basePath ? `${basePath}/${nextMission.id}` : `/${productSlug}/${pathSegment}/${nextMission.id}`}
           className="flex items-center justify-between mb-3 transition-all duration-200 active:opacity-80"
           style={{
             padding: "16px 18px",
@@ -90,7 +91,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
       {missions.map((mission) => (
         <Link
           key={mission.id}
-          href={`/${productSlug}/${pathSegment}/${mission.id}`}
+          href={basePath ? `${basePath}/${mission.id}` : `/${productSlug}/${pathSegment}/${mission.id}`}
           className="flex items-center mb-[10px] transition-all duration-200 active:opacity-80"
           style={{
             padding: "18px 16px",

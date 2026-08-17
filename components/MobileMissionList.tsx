@@ -119,7 +119,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span style={{ fontSize: "10px", fontWeight: 800, color: labelColor, letterSpacing: "1.5px", textTransform: "uppercase" }}>
-                {label} {mission.id}
+                {label} {missions.findIndex((m) => m.id === mission.id) + 1}
               </span>
               {mission.id === 1 && (
                 <span

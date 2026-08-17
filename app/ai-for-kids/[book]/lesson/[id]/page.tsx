@@ -45,8 +45,8 @@ export default async function AiLessonPage({ params }: Props) {
   const missionIndex = bookMissions.findIndex((m) => m.id === lessonId);
   const prevMission  = bookMissions[missionIndex - 1];
   const nextMission  = bookMissions[missionIndex + 1];
-  const moduleNumber = missionIndex + book.moduleStart;
-  const lastModule   = bookMissions.length - 1 + book.moduleStart;
+  const moduleNumber = missionIndex + 1;
+  const lastModule   = bookMissions.length;
   const tip          = AI_TIPS[lessonId % AI_TIPS.length];
 
   return (

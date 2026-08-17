@@ -32,7 +32,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
       {/* Continue banner */}
       {hasStarted && nextMission && (
         <Link
-          href={basePath ? `${basePath}/${nextMission.id}` : `/${productSlug}/${pathSegment}/${nextMission.id}`}
+          href={basePath ? `${basePath}/${missions.findIndex((m) => m.id === nextMission.id) + 1}` : `/${productSlug}/${pathSegment}/${nextMission.id}`}
           className="flex items-center justify-between mb-3 transition-all duration-200 active:opacity-80"
           style={{
             padding: "16px 18px",
@@ -91,7 +91,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
       {missions.map((mission) => (
         <Link
           key={mission.id}
-          href={basePath ? `${basePath}/${mission.id}` : `/${productSlug}/${pathSegment}/${mission.id}`}
+          href={basePath ? `${basePath}/${missions.findIndex((m) => m.id === mission.id) + 1}` : `/${productSlug}/${pathSegment}/${mission.id}`}
           className="flex items-center mb-[10px] transition-all duration-200 active:opacity-80"
           style={{
             padding: "18px 16px",

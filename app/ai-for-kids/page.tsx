@@ -273,10 +273,10 @@ export default function AiForKidsPage() {
 
               {/* Desktop 3-column grid */}
               <div className="hidden md:grid grid-cols-3 gap-5">
-                {bookMissions.map((mission) => (
+                {bookMissions.map((mission, idx) => (
                   <Link
                     key={mission.id}
-                    href={`/ai-for-kids/book${mission.book}/lesson/${mission.id}`}
+                    href={`/ai-for-kids/book${mission.book}/lesson/${idx + 1}`}
                     className="group block focus:outline-none"
                   >
                     <div

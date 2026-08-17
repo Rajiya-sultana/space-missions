@@ -24,8 +24,10 @@ const AI_TIPS = [
 ];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const mission = missions.find((m) => m.id === Number(id));
+  const { book: bookParam, id } = await params;
+  const bookNumber = Number(bookParam.replace("book", ""));
+  const bookMissions = missions.filter((m) => m.book === bookNumber);
+  const mission = bookMissions[Number(id) - 1];
   if (!mission) return {};
   return {
     title: `${mission.title} — AI for Kids`,
@@ -34,20 +36,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AiLessonPage({ params }: Props) {
-  const { id } = await params;
-  const lessonId = Number(id);
-  const mission  = missions.find((m) => m.id === lessonId);
+  const { book: bookParam, id } = await params;
+  const bookNumber   = Number(bookParam.replace("book", ""));
+  const lessonPos    = Number(id); // 1-based position within the book
+  const book         = books.find((b) => b.number === bookNumber);
+  if (!book) notFound();
+  const bookMissions = missions.filter((m) => m.book === bookNumber);
+  const mission      = bookMissions[lessonPos - 1];
   if (!mission) notFound();
 
-  const book         = books.find((b) => b.number === mission.book)!;
-  const accent       = book.accent;
-  const bookMissions = missions.filter((m) => m.book === mission.book);
-  const missionIndex = bookMissions.findIndex((m) => m.id === lessonId);
+  const missionIndex = lessonPos - 1;
   const prevMission  = bookMissions[missionIndex - 1];
   const nextMission  = bookMissions[missionIndex + 1];
   const moduleNumber = missionIndex + 1;
   const lastModule   = bookMissions.length;
-  const tip          = AI_TIPS[lessonId % AI_TIPS.length];
+  const tip          = AI_TIPS[mission.id % AI_TIPS.length];
 
   return (
     <div className="min-h-screen" style={{ background: BG }}>
@@ -84,7 +87,7 @@ export default async function AiLessonPage({ params }: Props) {
         <div className="flex items-center gap-3">
           {prevMission ? (
             <Link
-              href={`/ai-for-kids/book${prevMission.book}/lesson/${prevMission.id}`}
+              href={`/ai-for-kids/book${prevMission.book}/lesson/${lessonPos - 1}`}
               className="flex-1 rounded-xl px-4 py-3 flex items-center gap-3 border hover:shadow-sm transition-all"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >
@@ -98,7 +101,7 @@ export default async function AiLessonPage({ params }: Props) {
 
           {nextMission ? (
             <Link
-              href={`/ai-for-kids/book${nextMission.book}/lesson/${nextMission.id}`}
+              href={`/ai-for-kids/book${nextMission.book}/lesson/${lessonPos + 1}`}
               className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >

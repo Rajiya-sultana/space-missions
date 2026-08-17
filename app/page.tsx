@@ -81,6 +81,7 @@ const PRODUCTS: StaticProduct[] = [
     total: 25,
     href: "/ai-for-kids",
     buyUrl: "https://learnwhatmatters.in/products/ai-for-kids",
+    heroImage: "/thumb-ai-for-kids.png",
   },
 ];
 

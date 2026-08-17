@@ -69,6 +69,19 @@ const PRODUCTS: StaticProduct[] = [
     heroImage: "/thumb-young-hustler.jpg",
     buyUrl: "https://learnwhatmatters.in/products/think-like-a-hustler-build-like-a-hustler-teen-entrepreneurship-workbook-bundle-startup-business-marketing-side-hustle-guide-for-teens-ages-12-18",
   },
+  {
+    slug: "ai-for-kids",
+    title: "AI for Kids",
+    tagline: "25 LESSONS · AGES 8–14",
+    description: "Go from AI Cadet to Command Leader across 3 books and 25 video lessons on prompt engineering.",
+    emoji: "🤖",
+    gradient: "from-cyan-500 to-violet-600",
+    accent: "#06B6D4",
+    hoverBorderClass: "hover:border-cyan-400",
+    total: 25,
+    href: "/ai-for-kids",
+    buyUrl: "https://learnwhatmatters.in/products/ai-for-kids",
+  },
 ];
 
 interface CardProps {
@@ -197,10 +210,12 @@ export default function HubPage() {
   const { completed: spaceCompleted } = useProgress("space-explorer");
   const { completed: funCompleted } = useProgress("fun-science");
   const { completed: hustlerCompleted } = useProgress("young-hustler");
+  const { completed: aiCompleted } = useProgress("ai-for-kids");
   const progressBySlug: Record<string, Set<number>> = {
     "space-explorer": spaceCompleted,
     "fun-science": funCompleted,
     "young-hustler": hustlerCompleted,
+    "ai-for-kids": aiCompleted,
   };
 
   const handleScroll = useCallback(() => {
@@ -218,7 +233,7 @@ export default function HubPage() {
     });
   };
 
-  const totalWatched = spaceCompleted.size + funCompleted.size + hustlerCompleted.size;
+  const totalWatched = spaceCompleted.size + funCompleted.size + hustlerCompleted.size + aiCompleted.size;
 
   return (
     <div className="min-h-screen" style={{ background: "#FFFDF8" }}>

@@ -41,6 +41,7 @@ export default async function AiLessonPage({ params }: Props) {
   const lessonPos    = Number(id); // 1-based position within the book
   const book         = books.find((b) => b.number === bookNumber);
   if (!book) notFound();
+  const accent       = book.accent;
   const bookMissions = missions.filter((m) => m.book === bookNumber);
   const mission      = bookMissions[lessonPos - 1];
   if (!mission) notFound();

@@ -11,25 +11,27 @@ const AUTH_ENABLED = true;
 interface Props {
   missionId: number;
   videoUrl: string;
+  poster?: string;
   title: string;
   productSlug: string;
   vertical?: boolean;
   lightMode?: boolean;
+  noAuth?: boolean;
 }
 
-export default function ProtectedVideo({ missionId, videoUrl, title, productSlug, vertical = false, lightMode = false }: Props) {
+export default function ProtectedVideo({ missionId, videoUrl, poster, title, productSlug, vertical = false, lightMode = false, noAuth = false }: Props) {
   const aspect = vertical ? "aspect-[9/16]" : "aspect-video";
   const { user, loading, purchaseMap, logout } = useAuth();
   const hasPurchase = purchaseMap[productSlug] ?? false;
   const { markComplete } = useProgress(productSlug);
 
-  if (!AUTH_ENABLED) {
-    return <VideoPlayer videoUrl={videoUrl} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
+  if (!AUTH_ENABLED || noAuth) {
+    return <VideoPlayer videoUrl={videoUrl} poster={poster} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
   }
 
   // Mission 1 is always free
   if (missionId === 1) {
-    return <VideoPlayer videoUrl={videoUrl} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
+    return <VideoPlayer videoUrl={videoUrl} poster={poster} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
   }
 
   if (loading) {
@@ -117,5 +119,5 @@ export default function ProtectedVideo({ missionId, videoUrl, title, productSlug
     );
   }
 
-  return <VideoPlayer videoUrl={videoUrl} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
+  return <VideoPlayer videoUrl={videoUrl} poster={poster} title={title} onComplete={() => markComplete(missionId)} vertical={vertical} />;
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Nunito } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { WelcomeToast } from "@/components/WelcomeToast";
@@ -13,6 +12,12 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space",
+});
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  weight: ["400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${nunito.variable} h-full`}
     >
       <body className="min-h-full bg-[#050714] text-slate-50 antialiased" suppressHydrationWarning>
         <AuthProvider>

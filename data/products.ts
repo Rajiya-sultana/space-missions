@@ -1,4 +1,4 @@
-export type ProductSlug = "space-explorer" | "fun-science" | "young-hustler" | "financial-literacy";
+export type ProductSlug = "space-explorer" | "fun-science" | "young-hustler" | "financial-literacy" | "ai-for-kids";
 
 export type Mission = {
   id: number;
@@ -68,6 +68,18 @@ export const products: Product[] = [
     icon: "💰",
   },
   {
+    slug: "ai-for-kids",
+    title: "AI for Kids",
+    activateTitle: "AI for Kids — Prompt Engineering for Young Learners",
+    tagline: "Learn to talk to AI like a pro",
+    description:
+      "Three books, 25 video lessons — go from AI Cadet to Command Leader and master the art of prompting!",
+    shopifyProductId: "10681511969062",
+    shopifyUrl: "https://learnwhatmatters.in/products/ai-for-kids",
+    gradient: "from-cyan-500 via-blue-500 to-violet-500",
+    icon: "🤖",
+  },
+  {
     slug: "young-hustler",
     title: "Young Hustler",
     activateTitle: "Teen Entrepreneurship Workbook Bundle – Startup, Business & Side Hustle Guide",
@@ -87,6 +99,7 @@ export const PRODUCT_ID_TO_SLUG: Record<string, ProductSlug> = {
   "10530952642854": "fun-science",
   "10631554859302": "fun-science",
   "10532210344230": "young-hustler",
+  "10681511969062": "ai-for-kids",
 };
 
 // Bundle product IDs that unlock multiple products at once

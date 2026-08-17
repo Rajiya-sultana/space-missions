@@ -58,7 +58,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
               <p style={{ fontSize: "10px", fontWeight: 800, color: accentColor, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "2px" }}>
                 Continue
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor }}>
+              <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor, letterSpacing: "0.04em" }}>
                 {nextMission.subtitle}
               </p>
             </div>
@@ -134,7 +134,7 @@ export function MobileMissionList({ missions, productSlug, pathSegment = "missio
                 </span>
               )}
             </div>
-            <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor }} className="truncate">
+            <p style={{ fontSize: "16px", fontWeight: 700, color: titleColor, letterSpacing: "0.04em" }} className="truncate">
               {mission.subtitle}
             </p>
           </div>

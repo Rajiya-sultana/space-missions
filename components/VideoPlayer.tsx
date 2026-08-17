@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 
 type Props = {
   videoUrl: string;
+  poster?: string; // kept for API compatibility, not rendered (video first frame is used instead)
   title: string;
   onComplete?: () => void;
   vertical?: boolean;
@@ -19,7 +20,9 @@ export function VideoPlayer({ videoUrl, title, onComplete, vertical = false }: P
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play();
+      video.play().catch((err) => {
+        if (err.name !== "AbortError") console.error(err);
+      });
     } else {
       video.pause();
     }
@@ -36,11 +39,13 @@ export function VideoPlayer({ videoUrl, title, onComplete, vertical = false }: P
 
   return (
     <div className={`relative w-full ${aspect} rounded-2xl overflow-hidden bg-black group shadow-[0_0_60px_rgba(249,115,22,0.1)]`}>
+      {/* Video — blurred when not yet started so the first frame acts as backdrop */}
       <video
         ref={videoRef}
         src={videoUrl}
         title={title}
-        className="w-full h-full object-contain"
+        className="w-full h-full object-contain transition-all duration-300"
+        style={!hasStarted ? { filter: "blur(8px)", transform: "scale(1.05)" } : undefined}
         controls
         playsInline
         preload="metadata"
@@ -49,14 +54,14 @@ export function VideoPlayer({ videoUrl, title, onComplete, vertical = false }: P
         onEnded={() => { setIsPlaying(false); onComplete?.(); }}
       />
 
-      {/* Big play overlay before first interaction */}
+      {/* Play button overlay */}
       {!hasStarted && (
         <button
           onClick={handlePlay}
-          className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity hover:bg-black/30 group-hover:opacity-100"
+          className="absolute inset-0 flex items-center justify-center bg-black/20"
           aria-label={`Play ${title}`}
         >
-          <div className="w-20 h-20 rounded-full bg-orange-500 flex items-center justify-center shadow-[0_0_40px_rgba(249,115,22,0.6)] transition-transform hover:scale-110">
+          <div className="w-20 h-20 rounded-full bg-orange-500 flex items-center justify-center shadow-[0_0_40px_rgba(249,115,22,0.7)] transition-transform hover:scale-110">
             <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>

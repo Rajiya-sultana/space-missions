@@ -37,7 +37,7 @@ export default function AiForKidsPage() {
           </Link>
           <BrandLogo />
           <a
-            href="https://learnwhatmatters.in"
+            href="https://learnwhatmatters.in/products/ai-for-kids"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-semibold transition-opacity hover:opacity-70"
@@ -382,7 +382,7 @@ export default function AiForKidsPage() {
             </p>
           </div>
           <a
-            href="https://learnwhatmatters.in"
+            href="https://learnwhatmatters.in/products/ai-for-kids"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 font-bold rounded-xl px-6 py-3 text-sm transition-opacity hover:opacity-90"

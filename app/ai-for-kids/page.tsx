@@ -372,7 +372,7 @@ export default function AiForKidsPage() {
           className="rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6"
           style={{ background: `linear-gradient(135deg, ${DARK}, #4C1D95)` }}
         >
-          <div className="text-5xl flex-shrink-0">🤖</div>
+          <Image src="/aira-avatar.png" alt="AIRA" width={64} height={64} className="flex-shrink-0 object-contain" />
           <div className="flex-1 text-center sm:text-left">
             <h3 className="font-[family-name:var(--font-nunito)] font-bold text-white text-lg mb-1">
               Complete all 25 lessons and become an AI Mission Pro!

@@ -89,10 +89,10 @@ export default async function AiLessonPage({ params }: Props) {
           {prevMission ? (
             <Link
               href={`/ai-for-kids/book${prevMission.book}/lesson/${lessonPos - 1}`}
-              className="flex-1 rounded-xl px-4 py-3 flex items-center gap-3 border hover:shadow-sm transition-all"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center gap-3 border hover:shadow-sm transition-all"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >
-              <span style={{ color: `${accent}80` }}>←</span>
+              <span className="flex-shrink-0" style={{ color: `${accent}80` }}>←</span>
               <div className="min-w-0">
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>Previous</div>
                 <div className="text-sm font-semibold truncate" style={{ color: NAVY }}>{prevMission.title}</div>
@@ -103,26 +103,26 @@ export default async function AiLessonPage({ params }: Props) {
           {nextMission ? (
             <Link
               href={`/ai-for-kids/book${nextMission.book}/lesson/${lessonPos + 1}`}
-              className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >
               <div className="min-w-0">
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>Next</div>
                 <div className="text-sm font-semibold truncate" style={{ color: NAVY }}>{nextMission.title}</div>
               </div>
-              <span style={{ color: `${accent}80` }}>→</span>
+              <span className="flex-shrink-0" style={{ color: `${accent}80` }}>→</span>
             </Link>
           ) : (
             <Link
               href="/ai-for-kids"
-              className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:shadow-sm transition-all text-right"
               style={{ background: "#ffffff", borderColor: `${accent}30` }}
             >
-              <div>
+              <div className="min-w-0">
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>Book complete!</div>
-                <div className="text-sm font-semibold" style={{ color: "#10B981" }}>Back to All Lessons 🏆</div>
+                <div className="text-sm font-semibold truncate" style={{ color: "#10B981" }}>Back to All Lessons 🏆</div>
               </div>
-              <span style={{ color: `${accent}80` }}>→</span>
+              <span className="flex-shrink-0" style={{ color: `${accent}80` }}>→</span>
             </Link>
           )}
         </div>

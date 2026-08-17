@@ -64,10 +64,10 @@ export default function ExperimentPage({ params }: Props) {
           {prevExperiment ? (
             <Link
               href={`/fun-science/experiment/${prevExperiment.id}`}
-              className="flex-1 rounded-xl px-4 py-3 flex items-center gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group"
               style={{ background: "#ffffff", borderColor: "rgba(41,171,226,0.2)" }}
             >
-              <span className="transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>←</span>
+              <span className="flex-shrink-0 transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>←</span>
               <div className="min-w-0">
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>Previous</div>
                 <div className="text-sm font-semibold truncate" style={{ color: INK }}>{prevExperiment.subtitle}</div>
@@ -80,26 +80,26 @@ export default function ExperimentPage({ params }: Props) {
           {nextExperiment ? (
             <Link
               href={`/fun-science/experiment/${nextExperiment.id}`}
-              className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group text-right"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group text-right"
               style={{ background: "#ffffff", borderColor: "rgba(41,171,226,0.2)" }}
             >
               <div className="min-w-0">
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>Next</div>
                 <div className="text-sm font-semibold truncate" style={{ color: INK }}>{nextExperiment.subtitle}</div>
               </div>
-              <span className="transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>→</span>
+              <span className="flex-shrink-0 transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>→</span>
             </Link>
           ) : (
             <Link
               href="/fun-science"
-              className="flex-1 rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group text-right"
+              className="flex-1 min-w-0 overflow-hidden rounded-xl px-4 py-3 flex items-center justify-end gap-3 border hover:border-[#29ABE2] hover:shadow-sm transition-all group text-right"
               style={{ background: "#ffffff", borderColor: "rgba(41,171,226,0.2)" }}
             >
               <div>
                 <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "rgba(26,43,74,0.45)" }}>You did it!</div>
                 <div className="text-sm font-semibold" style={{ color: ORANGE }}>Back to Fun Science 🏆</div>
               </div>
-              <span className="transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>→</span>
+              <span className="flex-shrink-0 transition-colors group-hover:text-[#29ABE2]" style={{ color: "rgba(41,171,226,0.5)" }}>→</span>
             </Link>
           )}
         </div>

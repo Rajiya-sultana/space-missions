@@ -144,7 +144,6 @@ export default async function AiLessonPage({ params }: Props) {
                   productSlug="ai-for-kids"
                   vertical={true}
                   lightMode={true}
-                  noAuth={true}
                 />
               ) : (
                 <div

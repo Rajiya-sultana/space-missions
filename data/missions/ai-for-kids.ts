@@ -191,7 +191,7 @@ export const missions: AiMission[] = [
     title: "AI Safety Station",
     subtitle: "Stay Sharp. Stay Safe. Stay in Control.",
     description: "Upgrade your safety rules to Commander level. Learn the 5 Commander Safety Rules — never share personal data in prompts, verify facts before trusting them, own your work honestly, spot AI-generated content, and think before sharing anything AI produces.",
-    videoUrl: "https://cdn.shopify.com/videos/c/o/v/7ed0af92f57c463994eec1826c4fc868.mp4",
+    videoUrl: "https://cdn.shopify.com/videos/c/o/v/d51acf813582494990e97166e741e8f0.mp4",
     thumbnail: "/thumbnails/ai-for-kids/book-3/0.png",
     gradient: "from-orange-500 to-amber-600",
     planet: "🛡️",
